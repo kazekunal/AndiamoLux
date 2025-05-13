@@ -27,7 +27,7 @@ const destinations = [
 
 export default function DestinationsPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 md:px-8">
+    <div className="mx-auto max-w-7xl w-screen px-4 py-16 md:px-8 overflow-hidden">
       {/* Header Section */}
       <div className="mb-12">
         <p className="mb-2 text-sm font-medium uppercase tracking-wider text-white">TRAVELER'S FAVOURITE</p>

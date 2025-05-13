@@ -6,11 +6,11 @@ import PremiumServices from "./components/services";
 
 export default function Home() {
   return (
-    <>
+    <div className=" overflow-hidden">
     <Navbar />
     <LandingPage/>
     {/* <PremiumServices/> */}
     <DestinationsPage/>
-    </>
+    </div>
   );
 }
