@@ -34,8 +34,8 @@ export default function LandingPage() {
           </div> */}
           
           {/* Bottom section with headline, subheading and CTAs */}
-          <div className="mb-16 max-w-3xl">
-            <h1 className="mb-6 text-6xl font-bold leading-tight text-white md:text-6xl">
+          <div className="mb-16 md:mt-0 max-w-3xl">
+            <h1 className="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
               We design each trip based on your travel style,<br/> not off-the-shelf packages
               {/* Every Journey, Personally Designed for Your Travel Style */}
               {/* Your Style. Your Trip.<br/> Custom-Crafted, Every Time. */}
