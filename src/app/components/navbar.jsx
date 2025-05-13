@@ -32,12 +32,16 @@ export default function Navbar() {
       }`}>
         {/* Logo (mobile left) */}
         <div className="md:hidden">
+            <Link href="#">
           <h1 className="text-lg font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+          </Link>
         </div>
 
         {/* Logo (desktop center) */}
         <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
+            <Link href="#">
           <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+          </Link>
         </div>
 
         {/* Mobile menu toggle */}
