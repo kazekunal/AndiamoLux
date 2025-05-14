@@ -60,7 +60,7 @@ export default function Navbar() {
           <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             Home
           </Link>
-          <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#about" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             About Us
           </Link>
         </div>
@@ -70,7 +70,7 @@ export default function Navbar() {
           <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             Plan
           </Link>
-          <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#explore" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             Explore
           </Link>
         </div>
@@ -95,7 +95,7 @@ export default function Navbar() {
                 Home
               </Link>
               <Link 
-                href="#" 
+                href="#about" 
                 className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors"
                 onClick={toggleMenu}
               >
@@ -109,7 +109,7 @@ export default function Navbar() {
                 Plan
               </Link>
               <Link 
-                href="#" 
+                href="#explore" 
                 className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors"
                 onClick={toggleMenu}
               >

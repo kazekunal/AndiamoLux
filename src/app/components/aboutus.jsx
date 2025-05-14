@@ -3,7 +3,8 @@ import { ArrowUpRight } from 'lucide-react';
 
 export default function AboutUs() {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div id='about' className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 md:pb-4 md:h-screen content-center
+    ">
       <div className="mb-12 text-center">
         <p className="mb-2 text-sm font-medium uppercase tracking-wider text-white">
           EXCLUSIVELY YOURS
@@ -61,6 +62,7 @@ export default function AboutUs() {
           </div>
         ))}
       </div>
+      <div id='explore'></div>
     </div>
   );
 }
