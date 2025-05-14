@@ -1,3 +1,4 @@
+import AboutUs from "./components/aboutus";
 import DestinationsPage from "./components/explore";
 import LandingPage from "./components/heropage";
 import Navbar from "./components/navbar";
@@ -10,7 +11,9 @@ export default function Home() {
     <Navbar />
     <LandingPage/>
     {/* <PremiumServices/> */}
+    <AboutUs/>
     <DestinationsPage/>
+    
     </div>
   );
 }
