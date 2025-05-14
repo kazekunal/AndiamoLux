@@ -1,14 +1,16 @@
 import React from 'react';
-import { Instagram, Mail, Phone } from 'lucide-react'; // Import icons
+import { Instagram, Mail, Phone } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="mt-16 border-t border-white/10 pt-8 pb-4 text-center text-gray-400 text-sm">
+    <footer className="mt-4 border-t border-white/10 pt-8 pb-4 text-center text-gray-400 text-sm">
       <div className="max-w-4xl mx-auto">
         <p className="mb-4 font-semibold text-white">
           Andiamo Lux © {new Date().getFullYear()} | Bespoke Travel Experiences
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+
+        {/* Updated flex styling */}
+        <div className="flex flex-row flex-wrap items-center justify-center gap-4 mb-4">
           <a
             href="https://instagram.com/andiamolux"
             target="_blank"
@@ -36,10 +38,10 @@ const Footer = () => {
             <span className="hidden sm:inline">Email: experience@andiamolux.com</span>
           </a>
         </div>
+
         <p className="text-xs text-gray-500 mt-4">
-            {/* Add any terms, privacy policy links here if needed */}
-            Design and Developed by 
-            <a href="#" className="hover:text-white transition-colors "> Kunal Passan</a> 
+          Design and Developed by
+          <a href="#" className="hover:text-white transition-colors"> Kunal Passan</a>
         </p>
       </div>
     </footer>
