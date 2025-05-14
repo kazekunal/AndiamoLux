@@ -6,13 +6,13 @@ export default function AboutUs() {
     <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
         <p className="mb-2 text-sm font-medium uppercase tracking-wider text-white">
-          TRAVELER'S FAVOURITE
+          EXCLUSIVELY YOURS
         </p>
         <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
           What We Offer
         </h1>
         <p className="max-w-2xl mx-auto text-lg text-white">
-          Plan, book, and embark on your dream adventure with our expert guidance and tailored experiences.
+        Experience curated journeys with exclusive access, expert guidance, and bespoke itineraries — designed to make every trip seamless and unforgettable.
         </p>
       </div>
 
@@ -22,7 +22,7 @@ export default function AboutUs() {
           {
             title: 'Elite Access',
             description: 'Private transfers, handpicked stays, and upgrades.',
-            image: 'hero2.jpg',
+            image: 'hero9.jpg',
           },
           {
             title: 'White-Glove Service',
@@ -32,12 +32,12 @@ export default function AboutUs() {
           {
             title: 'Destination Expertise',
             description: 'From Seychelles to Santorini, Dubai to Ubud, we know luxury where it lives.',
-            image: 'hero8.jpg',
+            image: 'lux.jpg',
           },
           {
             title: 'Tailor-Made Itineraries',
             description: 'No templates. Only custom-crafted escapes.',
-            image: 'hero4.jpg',
+            image: 'dest.jpg',
           },
         ].map((card, idx) => (
           <div
