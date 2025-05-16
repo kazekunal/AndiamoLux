@@ -1,10 +1,22 @@
 import React from 'react';
 import { Instagram, Mail, Phone } from 'lucide-react';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
     <footer className="mt-4 bg-neutral-900 text-gray-300 pt-8 pb-4 text-center text-sm">
       <div className="max-w-4xl mx-auto px-4">
+        {/* Logo at the top of the footer */}
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo_new.png" 
+            alt="Andiamo Lux Logo"
+            width={140}
+            height={50}
+            className="h-auto"
+          />
+        </div>
+        
         <p className="mb-4 font-semibold text-white">
           Andiamo Lux © {new Date().getFullYear()} | Bespoke Travel Experiences
         </p>
