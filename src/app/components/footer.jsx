@@ -3,13 +3,12 @@ import { Instagram, Mail, Phone } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="mt-4 border-t border-white/10 pt-8 pb-4 text-center text-gray-400 text-sm">
-      <div className="max-w-4xl mx-auto">
+    <footer className="mt-4 bg-neutral-900 text-gray-300 pt-8 pb-4 text-center text-sm">
+      <div className="max-w-4xl mx-auto px-4">
         <p className="mb-4 font-semibold text-white">
           Andiamo Lux © {new Date().getFullYear()} | Bespoke Travel Experiences
         </p>
 
-        {/* Updated flex styling */}
         <div className="flex flex-row flex-wrap items-center justify-center gap-4 mb-4">
           <a
             href="https://instagram.com/andiamolux"
@@ -41,7 +40,7 @@ const Footer = () => {
 
         <p className="text-xs text-gray-500 mt-4">
           Design and Developed by
-          <a href="#" className="hover:text-white transition-colors"> Kunal Passan</a>
+          <a href="#" className="hover:text-white ml-1 transition-colors">Kunal Passan</a>
         </p>
       </div>
     </footer>

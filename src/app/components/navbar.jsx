@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -27,22 +28,36 @@ export default function Navbar() {
   return (
     <div className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-2 md:py-4' : 'py-4 md:py-8'}`}>
       {/* Navbar container */}
-      <div className={`relative flex w-full md:w-11/12 max-w-6xl items-center justify-between rounded-full px-4 md:px-8 py-3 md:py-4 backdrop-blur-sm transition-all duration-300 ${
+      <div className={`relative flex w-full md:w-11/12 max-w-6xl items-center justify-between rounded-full px-4 md:px-8 py-4 backdrop-blur-sm transition-all duration-300 ${
         scrolled ? 'bg-black/50' : 'bg-black/20'
       }`}>
         {/* Logo (mobile left) */}
         <div className="md:hidden">
-            <Link href="#">
-          <h1 className="text-lg font-bold tracking-widest text-white">ANDIAMO LUX</h1>
-          </Link>
-        </div>
+        <Link href="#">
+          {/* <Image
+            src="/logo1.png" // Change this path to your actual logo file
+            alt="Andiamo Lux Logo"
+            width={60}     // Adjust width and height as needed
+            height={40}
+            className="object-contain"
+          /> */}
+          <h1 className="text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+        </Link>
+      </div>
 
-        {/* Logo (desktop center) */}
-        <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
-            <Link href="#">
-          <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
-          </Link>
-        </div>
+      {/* Logo (desktop center) */}
+      <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
+        <Link href="#">
+          {/* <Image
+            src="/logo.png" // Use the same logo
+            alt="Andiamo Lux Logo"
+            width={140}     // Slightly larger for desktop
+            height={45}
+            className="object-contain"
+          /> */}
+          <h1 className="text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+        </Link>
+      </div>
 
         {/* Mobile menu toggle */}
         <div className="md:hidden">
@@ -57,20 +72,20 @@ export default function Navbar() {
 
         {/* Desktop left navigation */}
         <div className="hidden md:flex items-center space-x-10">
-          <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
             Home
           </Link>
-          <Link href="#about" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#about" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
             About Us
           </Link>
         </div>
 
         {/* Desktop right navigation */}
         <div className="hidden md:flex items-center space-x-10">
-          <Link href="#" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
             Plan
           </Link>
-          <Link href="#explore" className="text-sm font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+          <Link href="#explore" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
             Explore
           </Link>
         </div>

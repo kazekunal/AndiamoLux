@@ -8,15 +8,19 @@ import Footer from "./components/footer";
 import LandingPage from "./components/heropage";
 import Navbar from "./components/navbar";
 import PremiumServices from "./components/services";
+import HeroSection from './components/landing2';
+import AboutSection from './components/about2';
 
 
 export default function Home() {
   const phoneNumber = "917982841532"; // Store phone number as a variable
 
   return (
-    <div className="overflow-hidden relative">
+    <div className="bg-[#f2ede5] overflow-hidden relative">
       <Navbar />
-      <LandingPage />
+      <HeroSection/>
+      <AboutSection/>
+      {/* <LandingPage /> */}
       {/* <PremiumServices/> */}
       <AboutUs />
       <DestinationsPage />
