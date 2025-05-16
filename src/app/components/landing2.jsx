@@ -135,13 +135,9 @@ export default function HeroSection() {
       </div>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* <div className="absolute inset-0 bg-black/40" /> */}
 
       {/* Mobile swipe indicator */}
-      <div className="absolute top-1/2 left-0 w-full flex justify-between px-4 z-10 md:hidden">
-        <div className="text-white/20 select-none text-sm">← Swipe</div>
-        <div className="text-white/20 select-none text-sm">Swipe →</div>
-      </div>
 
       {/* Video navigation dots */}
       <div className="absolute bottom-20 sm:bottom-32 left-1/2 flex -translate-x-1/2 space-x-3 z-20">

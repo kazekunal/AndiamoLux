@@ -41,7 +41,7 @@ export default function Navbar() {
             height={40}
             className="object-contain"
           /> */}
-          <h1 className="text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+          <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
         </Link>
       </div>
 
