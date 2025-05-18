@@ -115,6 +115,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowUpRight, MapPin, ChevronRight, ChevronLeft } from "lucide-react"
+import TestimonialsCarousel from "./testimonials"
 
 const destinations = [
   {
@@ -465,53 +466,53 @@ export default function DestinationsPage() {
 
         {/* All Destinations Grid - Desktop View */}
         {!isMobile && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {regularDestinations.map((dest, index) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  key={index}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {regularDestinations.map((dest, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                key={index}
+              >
+                <Link
+                  href="#"
+                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition duration-500 block transform hover:-translate-y-2"
                 >
-                  <Link
-                    href="#"
-                    className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition duration-500 block transform hover:-translate-y-2"
-                  >
-                    <div className="relative h-[280px] w-full">
-                      <Image
-                        src={dest.image || "/placeholder.svg"}
-                        alt={dest.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/50 to-transparent" />
+                  <div className="relative h-[280px] w-full">
+                    <Image
+                      src={dest.image || "/placeholder.svg"}
+                      alt={dest.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/50 to-transparent" />
 
-                      <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <ArrowUpRight className="h-4 w-4 text-[#001737]" />
-                      </div>
-
-                      <div className="absolute bottom-0 left-0 p-6">
-                        <div className="flex items-center mb-1">
-                          <MapPin className="h-3 w-3 text-white/80 mr-1" />
-                          <span className="text-white/90 text-xs">{dest.tagline}</span>
-                        </div>
-                        <h2 className="mb-1 text-xl font-bold text-white md:text-2xl">{dest.name}</h2>
-                      </div>
+                    <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ArrowUpRight className="h-4 w-4 text-[#001737]" />
                     </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+
+                    <div className="absolute bottom-0 left-0 p-6">
+                      <div className="flex items-center mb-1">
+                        <MapPin className="h-3 w-3 text-white/80 mr-1" />
+                        <span className="text-white/90 text-xs">{dest.tagline}</span>
+                      </div>
+                      <h2 className="mb-1 text-xl font-bold text-white md:text-2xl">{dest.name}</h2>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
         
         {/* All Destinations Carousel - Mobile View */}
         {isMobile && (
@@ -527,6 +528,10 @@ export default function DestinationsPage() {
             />
           </motion.div>
         )}
+
+          <div>
+            <TestimonialsCarousel/>
+          </div>
 
         {/* Call to Action */}
         <motion.div
