@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from "next/image";
 
@@ -31,36 +31,55 @@ export default function Navbar() {
       <div className={`relative flex w-full md:w-11/12 max-w-6xl items-center justify-between rounded-full px-4 md:px-8 py-4 backdrop-blur-sm transition-all duration-300 ${
         scrolled ? 'bg-black/50' : 'bg-black/20'
       }`}>
-        {/* Logo (mobile left) */}
-        <div className="md:hidden">
-        <Link href="#">
-          {/* <Image
-            src="/logo1.png" // Change this path to your actual logo file
-            alt="Andiamo Lux Logo"
-            width={60}     // Adjust width and height as needed
-            height={40}
-            className="object-contain"
-          /> */}
-          <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
-        </Link>
-      </div>
+        {/* Left navigation links */}
+        <div className="hidden md:flex items-center space-x-12">
+          <Link href="#" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+            Home
+          </Link>
+          <Link href="#about" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+            About Us
+          </Link>
+          <Link href="#" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+            Plan
+          </Link>
+          <Link href="#explore" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+            Explore
+          </Link>
+        </div>
 
-      {/* Logo (desktop center) */}
-      <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
-        <Link href="#">
-          {/* <Image
-            src="/logo.png" // Use the same logo
-            alt="Andiamo Lux Logo"
-            width={140}     // Slightly larger for desktop
-            height={45}
-            className="object-contain"
-          /> */}
-          <h1 className="text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
-        </Link>
-      </div>
+        {/* Logo in center */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center hidden md:flex">
+          <Link href="#">
+            <h1 className="text-xl md:text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+          </Link>
+        </div>
 
-        {/* Mobile menu toggle */}
-        <div className="md:hidden">
+        {/* Social Media Icons - right side */}
+        <div className="hidden md:flex items-center space-x-4">
+          <Link href="https://www.instagram.com/andiamolux/" className="text-white hover:text-white/80 transition-colors p-2">
+            <Instagram size={20} />
+          </Link>
+          <Link href="#" className="text-white hover:text-white/80 transition-colors p-2">
+            <Facebook size={20} />
+          </Link>
+          <Link href="https://www.linkedin.com/company/andiamolux/about/?viewAsMember=true" className="text-white hover:text-white/80 transition-colors p-2">
+            <Linkedin size={20} />
+          </Link>
+        </div>
+
+        {/* Mobile view - logo and menu */}
+        <div className="md:hidden flex items-center justify-between w-full">
+          {/* Mobile social icon */}
+          
+          
+          {/* Mobile centered logo */}
+          <div className="flex items-center justify-center md:hidden">
+            <Link href="#">
+              <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+            </Link>
+          </div>
+                    
+          {/* Mobile menu toggle */}
           <button 
             onClick={toggleMenu} 
             className="text-white p-1 focus:outline-none"
@@ -68,26 +87,6 @@ export default function Navbar() {
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
-
-        {/* Desktop left navigation */}
-        <div className="hidden md:flex items-center space-x-10">
-          <Link href="#" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
-            Home
-          </Link>
-          <Link href="#about" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
-            About Us
-          </Link>
-        </div>
-
-        {/* Desktop right navigation */}
-        <div className="hidden md:flex items-center space-x-10">
-          <Link href="#" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
-            Plan
-          </Link>
-          <Link href="#explore" className="text-lg font-large tracking-wide text-white hover:text-white/80 transition-colors">
-            Explore
-          </Link>
         </div>
       </div>
 
@@ -99,7 +98,7 @@ export default function Navbar() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="absolute top-20 left-4 right-4 mx-auto mt-2 w-[90%] max-w-sm rounded-2xl bg-black/20 backdrop-blur-md shadow-lg z-40 backdrop-blur-sm"
+            className="absolute top-20 left-4 right-4 mx-auto mt-2 w-[90%] max-w-sm rounded-2xl bg-black/20 backdrop-blur-md shadow-lg z-40"
           >
             <div className="flex flex-col items-center space-y-4 p-6 text-center">
               <Link 
@@ -130,6 +129,19 @@ export default function Navbar() {
               >
                 Explore
               </Link>
+              
+              {/* Social icons in mobile menu */}
+              <div className="flex items-center space-x-6 pt-2">
+                <Link href="#" className="text-white hover:text-white/80 transition-colors">
+                  <Facebook size={20} />
+                </Link>
+                <Link href="https://www.linkedin.com/company/andiamolux/about/?viewAsMember=true" className="text-white hover:text-white/80 transition-colors">
+                  <Linkedin size={20} />
+                </Link>
+                <Link href="https://www.instagram.com/andiamolux/" className="text-white hover:text-white/80 transition-colors p-2">
+                  <Instagram size={20} />
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}

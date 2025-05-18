@@ -85,26 +85,23 @@ export default function AboutUsSection() {
             className="space-y-10"
           >
             <div className="flex flex-col gap-6">
-              <h2 className="text-4xl text-[#001737] font-bold tracking-tighter sm:text-5xl lg:text-6xl">
+              <h2 className="font-playfair text-4xl text-[#001737] font-bold tracking-tighter sm:text-5xl lg:text-6xl">
                 We design each trip based on your travel style, not off-the-shelf packages.
               </h2>
 
               <div className="w-20 h-1 bg-[#001737]" />
 
               <div className="space-y-6 text-gray-600 text-lg">
-                <p className="leading-relaxed">
+                <p className="font-playfair leading-relaxed">
                   At Andiamo Lux, we believe true luxury lies in the details. We bring insider access, curated
                   partnerships, and personal attention to every itinerary.
                 </p>
-                <p className="leading-relaxed">
+                <p className="font-sans leading-relaxed">
                   From overwater villas in the Maldives to private vineyard dinners in Georgia, our experiences go
                   beyond the ordinary, they're designed for those who expect more.
                 </p>
               </div>
             </div>
-
-            {/* Feature highlights */}
-            
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>

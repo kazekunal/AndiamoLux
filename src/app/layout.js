@@ -1,9 +1,18 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { Inter, Playfair_Display } from "next/font/google";
 
+// Make sure to specify weights for Playfair Display
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "900"], // Add explicit weights
 });
 
 export const metadata = {
@@ -15,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans`}>
         {children}
       </body>
     </html>
