@@ -85,7 +85,7 @@ const TestimonialsCarousel = () => {
   }, [currentIndex]);
 
   return (
-    <section className="pt-24 bg-gray-50">
+    <section className="pt-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-8">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-bold text-navy-900 mb-2">Client Experiences</h2>
