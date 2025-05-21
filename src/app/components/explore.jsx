@@ -110,13 +110,14 @@
 // }
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowUpRight, MapPin, ChevronRight, ChevronLeft } from "lucide-react"
 import TestimonialsCarousel from "./testimonials"
 
+// Constants moved outside component to prevent recreation on each render
 const destinations = [
   {
     id: "Seychelles",
@@ -196,61 +197,115 @@ const destinations = [
   },
 ]
 
-// Carousel component for mobile view
+// Isolated DestinationCard component for better code organization and memo potential
+const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) => {
+  const cardHeight = isFeatured 
+    ? isMobile ? "h-[350px]" : "h-[400px]" 
+    : "h-[280px]";
+  
+  return (
+    <Link
+      href="#"
+      className={`group relative overflow-hidden rounded-${isFeatured ? '3xl' : '2xl'} shadow-lg block ${cardHeight} w-full
+        ${!isMobile ? "transform transition duration-500 hover:shadow-xl hover:-translate-y-2" : ""}`}
+    >
+      <div className="relative h-full w-full">
+        <Image
+          src={destination.image || "/placeholder.svg"}
+          alt={destination.name}
+          fill
+          sizes={isFeatured 
+            ? "(max-width: 768px) 100vw, 50vw" 
+            : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"}
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          priority={isFeatured} // Load featured images with priority
+          loading={isFeatured ? "eager" : "lazy"} // Lazy load non-featured images
+          quality={isFeatured ? 85 : 75} // Lower quality for non-featured images
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/60 to-transparent" />
+        
+        <div className={`absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-${isFeatured ? '2' : '1.5'} rounded-full shadow-md z-10
+          ${!isMobile && !isFeatured ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''}`}>
+          <ArrowUpRight className={`h-${isFeatured ? '5' : '4'} w-${isFeatured ? '5' : '4'} text-[#001737]`} />
+        </div>
+        
+        <div className="absolute bottom-0 left-0 p-6">
+          <div className="flex items-center mb-1">
+            <MapPin className="h-3 w-3 text-white/80 mr-1" />
+            <span className="text-white/90 text-xs">{destination.tagline}</span>
+          </div>
+          <h2 className={`mb-1 font-bold text-white ${
+            isFeatured ? (isMobile ? 'text-2xl' : 'text-3xl md:text-4xl') : 'text-xl md:text-2xl'
+          }`}>
+            {destination.name}
+          </h2>
+          {isFeatured && (
+            <>
+              <div className="w-12 h-1 bg-white/80 mb-4" />
+              <button className="inline-flex items-center text-sm font-medium text-white group-hover:text-white/90 transition-colors">
+                Discover more{" "}
+                <ChevronRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// Optimized carousel component with proper memoization
 const DestinationCarousel = ({ items, title, isFeatured = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const carouselRef = useRef(null);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
+  const carouselRef = useRef(null);
   
-  const goToNext = () => {
-    if (currentIndex < items.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0); // Loop back to the first item
-    }
-  };
+  // Memoized navigation handlers to prevent recreating functions on each render
+  const goToNext = useCallback(() => {
+    setCurrentIndex(prevIndex => 
+      prevIndex < items.length - 1 ? prevIndex + 1 : 0
+    );
+  }, [items.length]);
   
-  const goToPrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentIndex(items.length - 1); // Loop to the last item
-    }
-  };
+  const goToPrev = useCallback(() => {
+    setCurrentIndex(prevIndex => 
+      prevIndex > 0 ? prevIndex - 1 : items.length - 1
+    );
+  }, [items.length]);
   
-  // Handle touch events for swiping
-  const handleTouchStart = (e) => {
+  // Memoized touch handlers
+  const handleTouchStart = useCallback((e) => {
     setTouchStart(e.touches[0].clientX);
-    setIsSwiping(true);
-  };
+  }, []);
   
-  const handleTouchMove = (e) => {
+  const handleTouchMove = useCallback((e) => {
     setTouchEnd(e.touches[0].clientX);
-  };
+  }, []);
   
-  const handleTouchEnd = () => {
-    setIsSwiping(false);
+  const handleTouchEnd = useCallback(() => {
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
     
-    if (isLeftSwipe) {
-      goToNext();
-    }
-    if (isRightSwipe) {
-      goToPrev();
-    }
+    if (isLeftSwipe) goToNext();
+    if (isRightSwipe) goToPrev();
     
     // Reset values
     setTouchStart(0);
     setTouchEnd(0);
-  };
+  }, [touchStart, touchEnd, goToNext, goToPrev]);
   
-  const cardHeight = isFeatured ? "h-[350px]" : "h-[280px]";
+  // Only render items that are visible or about to be visible (currentIndex + 1)
+  // This improves performance by not rendering all carousel items at once
+  const visibleItemsIndices = useMemo(() => {
+    const indices = [currentIndex];
+    if (currentIndex < items.length - 1) indices.push(currentIndex + 1);
+    if (currentIndex > 0) indices.push(currentIndex - 1);
+    return indices;
+  }, [currentIndex, items.length]);
   
   return (
     <div className="relative mb-12">
@@ -271,43 +326,15 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
           }}
         >
           {items.map((dest, index) => (
-            <div key={index} className="w-full flex-shrink-0 px-2">
-              <Link
-                href="#"
-                className={`group relative overflow-hidden rounded-2xl shadow-lg block ${cardHeight} w-full`}
-              >
-                <div className="relative h-full w-full">
-                  <Image
-                    src={dest.image || "/placeholder.svg"}
-                    alt={dest.name}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/60 to-transparent" />
-                  
-                  <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-md z-10">
-                    <ArrowUpRight className="h-4 w-4 text-[#001737]" />
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 p-6">
-                    <div className="flex items-center mb-1">
-                      <MapPin className="h-3 w-3 text-white/80 mr-1" />
-                      <span className="text-white/90 text-xs">{dest.tagline}</span>
-                    </div>
-                    <h2 className={`mb-1 font-bold text-white ${isFeatured ? 'text-2xl' : 'text-xl'}`}>
-                      {dest.name}
-                    </h2>
-                    {isFeatured && (
-                      <>
-                        <div className="w-12 h-1 bg-white/80 mb-4" />
-                        <button className="inline-flex items-center text-sm font-medium text-white">
-                          Discover more <ChevronRight className="h-4 w-4 ml-1" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </Link>
+            <div key={dest.id} className="w-full flex-shrink-0 px-2">
+              {/* Only render items that are visible or about to be visible */}
+              {visibleItemsIndices.includes(index) && (
+                <DestinationCard 
+                  destination={dest} 
+                  isFeatured={isFeatured} 
+                  isMobile={true} 
+                />
+              )}
             </div>
           ))}
         </div>
@@ -332,14 +359,14 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
       
       {/* Pagination dots */}
       <div className="flex justify-center mt-4 space-x-2">
-        {items.map((_, index) => (
+        {items.map((dest) => (
           <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
+            key={dest.id}
+            onClick={() => setCurrentIndex(items.findIndex(item => item.id === dest.id))}
             className={`h-2 w-2 rounded-full transition-colors ${
-              currentIndex === index ? 'bg-[#001737]' : 'bg-gray-300'
+              currentIndex === items.findIndex(item => item.id === dest.id) ? 'bg-[#001737]' : 'bg-gray-300'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`Go to ${dest.name}`}
           />
         ))}
       </div>
@@ -350,10 +377,15 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
 export default function DestinationsPage() {
   const [isMobile, setIsMobile] = useState(false);
   
-  // Check for mobile view
+  // Check for mobile view with debounce to prevent excessive renders
   useEffect(() => {
+    let timeoutId = null;
+    
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768);
+      }, 200); // 200ms debounce
     };
     
     // Set initial value
@@ -363,13 +395,19 @@ export default function DestinationsPage() {
     window.addEventListener('resize', checkIsMobile);
     
     // Cleanup
-    return () => window.removeEventListener('resize', checkIsMobile);
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+      clearTimeout(timeoutId);
+    };
   }, []);
   
-  // Featured destinations to highlight at the top
-  const featuredDestinations = destinations.filter((dest) => dest.featured);
-  // Regular destinations grid
-  const regularDestinations = destinations.filter((dest) => !dest.featured);
+  // Memoize filtered destinations to prevent recalculation on every render
+  const { featuredDestinations, regularDestinations } = useMemo(() => {
+    return {
+      featuredDestinations: destinations.filter((dest) => dest.featured),
+      regularDestinations: destinations.filter((dest) => !dest.featured)
+    };
+  }, []);
 
   return (
     <div className="relative bg-[#f8f9fc] overflow-hidden">
@@ -410,39 +448,13 @@ export default function DestinationsPage() {
           >
             <h2 className="text-2xl font-bold text-[#001737] mb-8">Featured Destinations</h2>
             <div className="grid gap-8 md:grid-cols-2">
-              {featuredDestinations.slice(0, 2).map((dest, index) => (
-                <Link
-                  href="#"
-                  key={index}
-                  className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition duration-500"
-                >
-                  <div className="relative h-[400px] w-full">
-                    <Image
-                      src={dest.image || "/placeholder.svg"}
-                      alt={dest.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/60 via-transparent to-transparent" />
-
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md z-10 transform transition-transform duration-300 group-hover:rotate-45">
-                      <ArrowUpRight className="h-5 w-5 text-[#001737]" />
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 p-8">
-                      <div className="flex items-center mb-2">
-                        <MapPin className="h-4 w-4 text-white/80 mr-2" />
-                        <span className="text-white/90 text-sm">{dest.tagline}</span>
-                      </div>
-                      <h2 className="mb-2 text-3xl font-bold text-white md:text-4xl">{dest.name}</h2>
-                      <div className="w-12 h-1 bg-white/80 mb-4" />
-                      <button className="inline-flex items-center text-sm font-medium text-white group-hover:text-white/90 transition-colors">
-                        Discover more{" "}
-                        <ChevronRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
-                      </button>
-                    </div>
-                  </div>
-                </Link>
+              {featuredDestinations.slice(0, 2).map((dest) => (
+                <DestinationCard
+                  key={dest.id}
+                  destination={dest}
+                  isFeatured={true}
+                  isMobile={false}
+                />
               ))}
             </div>
           </motion.div>
@@ -478,36 +490,15 @@ export default function DestinationsPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: Math.min(index * 0.1, 0.5) }}
                 viewport={{ once: true }}
-                key={index}
+                key={dest.id}
               >
-                <Link
-                  href="#"
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition duration-500 block transform hover:-translate-y-2"
-                >
-                  <div className="relative h-[280px] w-full">
-                    <Image
-                      src={dest.image || "/placeholder.svg"}
-                      alt={dest.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/50 to-transparent" />
-
-                    <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-1.5 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ArrowUpRight className="h-4 w-4 text-[#001737]" />
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 p-6">
-                      <div className="flex items-center mb-1">
-                        <MapPin className="h-3 w-3 text-white/80 mr-1" />
-                        <span className="text-white/90 text-xs">{dest.tagline}</span>
-                      </div>
-                      <h2 className="mb-1 text-xl font-bold text-white md:text-2xl">{dest.name}</h2>
-                    </div>
-                  </div>
-                </Link>
+                <DestinationCard 
+                  destination={dest} 
+                  isFeatured={false}
+                  isMobile={false}
+                />
               </motion.div>
             ))}
           </div>
@@ -529,9 +520,10 @@ export default function DestinationsPage() {
           </motion.div>
         )}
 
-          <div>
-            <TestimonialsCarousel/>
-          </div>
+        {/* Testimonials Section */}
+        <div>
+          <TestimonialsCarousel/>
+        </div>
 
         {/* Call to Action */}
         <motion.div

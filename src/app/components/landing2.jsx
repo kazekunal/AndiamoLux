@@ -232,7 +232,7 @@ export default function HeroSection() {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
-  
+
   return (
     <div 
       id="hero-section"
@@ -267,10 +267,9 @@ export default function HeroSection() {
               preload="none" // Let us control loading manually
               onLoadedData={() => handleVideoLoad(index)}
               // Better mobile performance with these attributes
-              poster={`/poster${index + 1}.jpg`} // Add poster images for your videos
+              poster={`/poster${index + 1}.png`} // Add poster images for your videos
               disablePictureInPicture
               // Video speed 1.25x for slightly faster playback
-              playbackRate={1.25}
             />
           </div>
         ))}
