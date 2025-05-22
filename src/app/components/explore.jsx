@@ -5,17 +5,18 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowUpRight, MapPin, ChevronRight, ChevronLeft } from "lucide-react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselApi,
+} from "@/components/ui/carousel"
 import TestimonialsCarousel from "./testimonials"
 
 // Constants moved outside component to prevent recreation on each render
 const destinations = [
-  {
-    id: "Seychelles",
-    name: "Seychelles",
-    tagline: "Serene Shores",
-    image: "/sey.jpg",
-    featured: true,
-  },
   {
     id: "Dubai",
     name: "Dubai",
@@ -28,25 +29,28 @@ const destinations = [
     name: "Andaman & Nicobar Islands",
     tagline: "Island Reverie",
     image: "/island.jpg",
+    
   },
   {
     id: "Vietnam",
     name: "Vietnam",
     tagline: "Island Escape",
     image: "/vietnam.jpg",
+    
   },
   {
     id: "Georgia",
     name: "Georgia",
     tagline: "Caucasian Retreat",
     image: "/georgia.jpg",
+    
   },
   {
     id: "Bali",
     name: "Bali",
     tagline: "Eternal Bali",
     image: "/hero4.jpg",
-    featured: true,
+    // featured: true,
   },
   {
     id: "Thailand",
@@ -66,33 +70,108 @@ const destinations = [
     name: "Bhutan",
     tagline: "Himalayan Serenity",
     image: "/bhutan.jpg",
+    
   },
   {
     id: "Nepal",
     name: "Nepal",
     tagline: "Roof of the World",
     image: "/nepal.jpg",
+    
+  },
+  {
+    id: "Seychelles",
+    name: "Seychelles",
+    tagline: "Serene Shores",
+    image: "/sey.jpg",
+    // featured: true,
   },
   {
     id: "Sri Lanka",
     name: "Sri Lanka",
     tagline: "Pearl of the Indian Ocean",
     image: "/srilanka.jpg",
+    
   },
   {
     id: "Singapore",
     name: "Singapore",
     tagline: "Urban Oasis",
     image: "/singapore.jpg",
+    
   },
 ]
 
-// Isolated DestinationCard component for better code organization and memo potential
-const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) => {
+// Image preloader utility
+const preloadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image()
+    img.onload = () => resolve(src)
+    img.onerror = reject
+    img.src = src
+  })
+}
+
+// Loading skeleton component for destinations
+const DestinationSkeleton = ({ isFeatured = false, isMobile = false }) => {
+  const cardHeight = isFeatured
+    ? isMobile ? "h-[450px]" : "h-[400px]"
+    : isMobile ? "h-[320px]" : "h-[280px]"
+
+  return (
+    <div className={`relative overflow-hidden rounded-${isFeatured ? '3xl' : '2xl'} shadow-lg ${cardHeight} w-full`}>
+      <div className="relative h-full w-full">
+        {/* Animated skeleton background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-pulse" 
+               style={{
+                 animation: 'shimmer 2s infinite linear',
+                 backgroundSize: '200% 100%'
+               }} />
+        </div>
+
+        {/* Skeleton content */}
+        <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? 'p-5' : 'p-6'}`}>
+          <div className="flex items-center mb-2">
+            <div className={`${isMobile ? 'h-4 w-4' : 'h-3 w-3'} bg-white/30 rounded mr-2`} />
+            <div className={`${isMobile ? 'h-4 w-20' : 'h-3 w-16'} bg-white/30 rounded`} />
+          </div>
+          <div className={`mb-2 bg-white/40 rounded ${
+            isFeatured 
+              ? (isMobile ? 'h-8 w-3/4' : 'h-10 w-2/3') 
+              : (isMobile ? 'h-6 w-2/3' : 'h-5 w-1/2')
+          }`} />
+          {isFeatured && (
+            <>
+              <div className={`${isMobile ? 'w-16 h-1' : 'w-12 h-1'} bg-white/30 mb-4`} />
+              <div className={`${isMobile ? 'h-4 w-32' : 'h-3 w-24'} bg-white/30 rounded`} />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Optimized DestinationCard component with smart loading
+const DestinationCard = ({ 
+  destination, 
+  isFeatured = false, 
+  isMobile = false, 
+  shouldPreload = false,
+  isVisible = true 
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
   // Fixed height classes with better mobile sizing
   const cardHeight = isFeatured
-    ? isMobile ? "h-[450px]" : "h-[400px]" // Increased mobile height for featured cards
-    : isMobile ? "h-[320px]" : "h-[280px]"; // Increased mobile height for regular cards
+    ? isMobile ? "h-[450px]" : "h-[400px]"
+    : isMobile ? "h-[320px]" : "h-[280px]"
+
+  // Determine loading strategy
+  const loadingStrategy = shouldPreload ? "eager" : "lazy"
+  const priority = shouldPreload || isFeatured
 
   return (
     <Link
@@ -101,6 +180,14 @@ const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) 
         ${!isMobile ? "transform transition duration-500 hover:shadow-xl hover:-translate-y-2" : ""}`}
     >
       <div className="relative h-full w-full">
+        {/* Loading skeleton */}
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse">
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-400/20 to-transparent" />
+          </div>
+        )}
+
+        {/* Main image with optimized loading - FIXED: Consistent object-fit behavior */}
         <Image
           src={destination.image || "/placeholder.svg"}
           alt={destination.name}
@@ -108,31 +195,35 @@ const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) 
           sizes={isFeatured
             ? "(max-width: 768px) 100vw, 50vw"
             : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"}
-          className={`object-cover transition-transform duration-700 group-hover:scale-105 ${
-            isMobile ? 'object-center' : '' // Better centering for mobile
-          }`}
-          priority={isFeatured} // Load featured images with priority
-          loading={isFeatured ? "eager" : "lazy"} // Lazy load non-featured images
-          quality={isMobile ? 90 : (isFeatured ? 85 : 75)} // Higher quality for mobile to reduce blur
-          onError={(e) => {
-            // Fallback for image loading errors
-            e.target.onerror = null;
-            e.target.src = "/placeholder.svg";
+          className={`object-cover object-center transition-all duration-700 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          } ${!isMobile ? 'group-hover:scale-105' : ''}`}
+          priority={priority}
+          // loading={loadingStrategy}
+          quality={isMobile ? 85 : (isFeatured ? 80 : 70)}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => {
+            setImageError(true)
+            setImageLoaded(true)
           }}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Rev//2Q=="
         />
-        {/* Enhanced gradient overlay for better text readability on mobile */}
+
+        {/* Enhanced gradient overlay */}
         <div className={`absolute inset-0 ${
           isMobile 
             ? 'bg-gradient-to-t from-[#001737] via-[#001737]/20 to-transparent' 
             : 'bg-gradient-to-t from-[#001737]/20 to-transparent'
         }`} />
 
+        {/* Arrow icon */}
         <div className={`absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-${isFeatured ? '2' : '1.5'} rounded-full shadow-md z-10
           ${!isMobile && !isFeatured ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''}`}>
           <ArrowUpRight className={`h-${isFeatured ? '5' : '4'} w-${isFeatured ? '5' : '4'} text-[#001737]`} />
         </div>
 
-        {/* Enhanced text positioning and sizing for mobile */}
+        {/* Content */}
         <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? 'p-5' : 'p-6'}`}>
           <div className="flex items-center mb-2">
             <MapPin className={`${isMobile ? 'h-4 w-4' : 'h-3 w-3'} text-white/90 mr-2`} />
@@ -161,151 +252,186 @@ const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) 
         </div>
       </div>
     </Link>
-  );
-};
+  )
+}
 
-// Optimized carousel component with proper memoization
-const DestinationCarousel = ({ items, title, isFeatured = false }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
-  const carouselRef = useRef(null);
+// shadcn/ui Carousel with all original functionalities
+const DestinationCarousel = ({ items, title, isFeatured = false, isLoading = false }) => {
+  const [api, setApi] = useState(null)
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+  const [preloadedImages, setPreloadedImages] = useState(new Set())
+  const autoScrollRef = useRef(null)
 
-  // Memoized navigation handlers to prevent recreating functions on each render
-  const goToNext = useCallback(() => {
-    setCurrentIndex(prevIndex =>
-      prevIndex < items.length - 1 ? prevIndex + 1 : 0
-    );
-  }, [items.length]);
+  // Initialize carousel API and set up event listeners
+  useEffect(() => {
+    if (!api) return
 
-  const goToPrev = useCallback(() => {
-    setCurrentIndex(prevIndex =>
-      prevIndex > 0 ? prevIndex - 1 : items.length - 1
-    );
-  }, [items.length]);
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
 
-  // Improved touch handlers for mobile
-  const handleTouchStart = useCallback((e) => {
-    setTouchStart(e.touches[0].clientX);
-    setIsSwiping(true);
-    // Prevent page scrolling while swiping carousel
-    document.body.style.overflow = 'hidden';
-  }, []);
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
 
-  const handleTouchMove = useCallback((e) => {
-    if (!isSwiping) return;
-    setTouchEnd(e.touches[0].clientX);
+  // Preload current and adjacent images
+  useEffect(() => {
+    if (isLoading || !items.length || !api) return
 
-    // Calculate how far we've swiped
-    if (touchStart && carouselRef.current) {
-      const diff = touchStart - e.touches[0].clientX;
-      const containerWidth = carouselRef.current.offsetWidth;
-      const scrollOffset = currentIndex * containerWidth;
+    const currentIndex = current - 1 // Convert to 0-based index
+    const preloadImages = async () => {
+      const imagesToPreload = []
+      
+      // Current image
+      if (items[currentIndex]) {
+        imagesToPreload.push(items[currentIndex].image)
+      }
+      
+      // Next image
+      const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0
+      if (items[nextIndex]) {
+        imagesToPreload.push(items[nextIndex].image)
+      }
+      
+      // Previous image
+      const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1
+      if (items[prevIndex]) {
+        imagesToPreload.push(items[prevIndex].image)
+      }
 
-      // Apply a drag effect during swipe
-      if (Math.abs(diff) > 10) {
-        e.preventDefault(); // Prevent default only when actually swiping
-
-        // Calculate progressive transform based on swipe distance
-        const progressiveOffset = diff / 2; // Reduce the movement to make it feel more controlled
-        carouselRef.current.querySelector('.carousel-inner').style.transform =
-          `translateX(-${scrollOffset + progressiveOffset}px)`;
+      // Preload images that aren't already loaded
+      const newImages = imagesToPreload.filter(img => !preloadedImages.has(img))
+      
+      if (newImages.length > 0) {
+        try {
+          await Promise.allSettled(newImages.map(preloadImage))
+          setPreloadedImages(prev => {
+            const updated = new Set(prev)
+            newImages.forEach(img => updated.add(img))
+            return updated
+          })
+        } catch (error) {
+          console.warn('Failed to preload some images:', error)
+        }
       }
     }
-  }, [touchStart, isSwiping, currentIndex]);
 
-  const handleTouchEnd = useCallback(() => {
-    setIsSwiping(false);
-    // Re-enable page scrolling
-    document.body.style.overflow = '';
+    preloadImages()
+  }, [current, items, preloadedImages, isLoading, api])
 
-    if (!touchStart || !touchEnd) return;
+  // Auto-scroll for featured destinations only
+  useEffect(() => {
+    if (!isFeatured || isLoading || !api) return
 
-    // Reset manual transformation
-    if (carouselRef.current) {
-      carouselRef.current.querySelector('.carousel-inner').style.transition = 'transform 300ms ease-out';
+    const startAutoScroll = () => {
+      autoScrollRef.current = setInterval(() => {
+        api.scrollNext()
+      }, 5000) // Auto-scroll every 5 seconds
     }
 
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) goToNext();
-    if (isRightSwipe) goToPrev();
-
-    // Reset values
-    setTouchStart(0);
-    setTouchEnd(0);
-
-    // Reset transform after state update
-    setTimeout(() => {
-      if (carouselRef.current) {
-        carouselRef.current.querySelector('.carousel-inner').style.transition = '';
+    const stopAutoScroll = () => {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current)
+        autoScrollRef.current = null
       }
-    }, 300);
-  }, [touchStart, touchEnd, goToNext, goToPrev]);
+    }
 
-  // Enhanced carousel with better mobile optimization
+    startAutoScroll()
+
+    // Pause auto-scroll on user interaction
+    const handleUserInteraction = () => {
+      stopAutoScroll()
+      // Restart after 10 seconds of inactivity
+      setTimeout(startAutoScroll, 10000)
+    }
+
+    api.on("pointerDown", handleUserInteraction)
+
+    return () => {
+      stopAutoScroll()
+      api.off("pointerDown", handleUserInteraction)
+    }
+  }, [isFeatured, isLoading, api])
+
+  // Determine which images should be preloaded
+  const shouldPreloadImage = useCallback((index) => {
+    const currentIndex = current - 1
+    return Math.abs(index - currentIndex) <= 1 || 
+           (currentIndex === 0 && index === items.length - 1) ||
+           (currentIndex === items.length - 1 && index === 0)
+  }, [current, items.length])
+
+  if (isLoading) {
+    return (
+      <div className="relative mb-12">
+        <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>
+        <div className="relative overflow-hidden rounded-2xl">
+          <DestinationSkeleton isFeatured={isFeatured} isMobile={true} />
+        </div>
+        {/* Skeleton navigation */}
+        <div className="flex justify-center mt-8 space-x-2">
+          {[...Array(3)].map((_, idx) => (
+            <div key={idx} className="h-2.5 w-2.5 rounded-full bg-gray-300 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="relative mb-12">
       <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>
 
-      <div
-        className="relative overflow-hidden rounded-2xl" // Added rounded corners to container
-        ref={carouselRef}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+      <Carousel
+        setApi={setApi}
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
       >
-        <div
-          className="flex carousel-inner transition-transform duration-300 ease-out"
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-            width: `${items.length * 100}%`
-          }}
-        >
+        <CarouselContent className="-ml-1">
           {items.map((dest, index) => (
-            <div
-              key={dest.id}
-              className="w-full flex-shrink-0 px-1" // Reduced padding to minimize gaps
-            >
-              {/* Render all items but optimize loading */}
-              <DestinationCard
-                destination={dest}
-                isFeatured={isFeatured}
-                isMobile={true}
-              />
-            </div>
+            <CarouselItem key={dest.id} className="pl-1">
+              <div className="relative overflow-hidden rounded-2xl">
+                <DestinationCard
+                  destination={dest}
+                  isFeatured={isFeatured}
+                  isMobile={true}
+                  shouldPreload={shouldPreloadImage(index)}
+                  isVisible={Math.abs(index - (current - 1)) <= 1}
+                />
+              </div>
+            </CarouselItem>
           ))}
-        </div>
-      </div>
+        </CarouselContent>
 
-      {/* Enhanced navigation arrows with better positioning */}
-      <button
-        onClick={goToPrev}
-        className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm p-3 rounded-full shadow-lg z-20 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737] transition-all duration-200"
-        aria-label="Previous destination"
-      >
-        <ChevronLeft className="h-6 w-6 text-[#001737]" />
-      </button>
+        {/* Custom styled navigation buttons */}
+        <CarouselPrevious 
+          className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm hover:bg-white border-0 shadow-lg w-12 h-12 z-20"
+          disabled={isLoading}
+        >
+          <ChevronLeft className="h-6 w-6 text-[#001737]" />
+        </CarouselPrevious>
 
-      <button
-        onClick={goToNext}
-        className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm p-3 rounded-full shadow-lg z-20 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737] transition-all duration-200"
-        aria-label="Next destination"
-      >
-        <ChevronRight className="h-6 w-6 text-[#001737]" />
-      </button>
+        <CarouselNext 
+          className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm hover:bg-white border-0 shadow-lg w-12 h-12 z-20"
+          disabled={isLoading}
+        >
+          <ChevronRight className="h-6 w-6 text-[#001737]" />
+        </CarouselNext>
+      </Carousel>
 
-      {/* Enhanced pagination dots with better spacing */}
+      {/* Custom pagination dots */}
       <div className="flex justify-center mt-8 space-x-2">
         {items.map((dest, idx) => (
           <button
             key={dest.id}
-            onClick={() => setCurrentIndex(idx)}
-            className={`h-2.5 w-2.5 rounded-full transition-all duration-200 ${
-              currentIndex === idx 
+            onClick={() => !isLoading && api?.scrollTo(idx)}
+            disabled={isLoading}
+            className={`h-2.5 w-2.5 rounded-full transition-all duration-200 disabled:cursor-not-allowed ${
+              current === idx + 1
                 ? 'bg-[#001737] scale-125' 
                 : 'bg-gray-300 hover:bg-gray-400'
             }`}
@@ -314,59 +440,89 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function DestinationsPage() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false)
+  const [isComponentLoading, setIsComponentLoading] = useState(true)
+  const [destinationsLoading, setDestinationsLoading] = useState(true)
 
   // Check for mobile view with improved detection
   useEffect(() => {
-    // Initial check before mounting
     const checkIsMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      setIsComponentLoading(false)
+    }
 
-      // After initial detection, remove loading state
-      setIsLoading(false);
-    };
+    checkIsMobile()
 
-    // Set initial value
-    checkIsMobile();
-
-    // Debounced resize handler
-    let timeoutId = null;
+    let timeoutId = null
     const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkIsMobile, 200);
-    };
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(checkIsMobile, 200)
+    }
 
-    // Add event listener for window resize
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timeoutId);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(timeoutId)
+    }
+  }, [])
 
-  // Memoize filtered destinations to prevent recalculation on every render
-  const { featuredDestinations, regularDestinations } = useMemo(() => {
+  // Preload critical images on component mount (non-blocking)
+  useEffect(() => {
+    const preloadCriticalImages = async () => {
+      if (isComponentLoading) return
+
+      const featuredDestinations = destinations.filter(dest => dest.featured)
+      const criticalImages = featuredDestinations.slice(0, 2).map(dest => dest.image)
+      
+      try {
+        await Promise.allSettled(criticalImages.map(preloadImage))
+      } catch (error) {
+        console.warn('Failed to preload critical images:', error)
+      } finally {
+        // Small delay to show loading state briefly
+        setTimeout(() => {
+          setDestinationsLoading(false)
+        }, 500)
+      }
+    }
+
+    preloadCriticalImages()
+  }, [isComponentLoading])
+
+  // Memoize filtered destinations
+  const { featuredDestinations, regularDestinations, firstHalfDestinations, secondHalfDestinations } = useMemo(() => {
+    const featured = destinations.filter((dest) => dest.featured)
+    const regular = destinations.filter((dest) => !dest.featured)
+    
+    // Split regular destinations into two halves for mobile carousels
+    const midpoint = Math.ceil(regular.length / 2)
+    const firstHalf = regular.slice(0, midpoint)
+    const secondHalf = regular.slice(midpoint)
+    
     return {
-      featuredDestinations: destinations.filter((dest) => dest.featured),
-      regularDestinations: destinations.filter((dest) => !dest.featured)
-    };
-  }, []);
+      featuredDestinations: featured,
+      regularDestinations: regular,
+      firstHalfDestinations: firstHalf,
+      secondHalfDestinations: secondHalf
+    }
+  }, [])
 
-  // Show a minimal loading state while detecting device
-  if (isLoading) {
+  // Show minimal loading only for initial component setup
+  if (isComponentLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#f8f9fc]">
-        <div className="w-16 h-16 border-4 border-[#001737]/20 border-t-[#001737] rounded-full animate-spin"></div>
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#001737]/20 border-t-[#001737] rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#001737]/60 text-sm">Initializing...</p>
+        </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -376,11 +532,11 @@ export default function DestinationsPage() {
       <div className="absolute bottom-40 right-10 w-80 h-80 rounded-full bg-[#f0f7ff] opacity-60 blur-3xl -z-10" />
 
       <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16 md:px-8 md:py-20">
-        {/* Header Section */}
+        {/* Header Section - Always visible */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }} // Faster animation for mobile
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="mb-10 sm:mb-16 text-center"
         >
@@ -402,21 +558,29 @@ export default function DestinationsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="mb-16"
           >
             <h2 className="text-2xl font-bold text-[#001737] mb-8">Featured Destinations</h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {featuredDestinations.slice(0, 2).map((dest) => (
-                <DestinationCard
-                  key={dest.id}
-                  destination={dest}
-                  isFeatured={true}
-                  isMobile={false}
-                />
-              ))}
-            </div>
+            {destinationsLoading ? (
+              <div className="grid gap-8 md:grid-cols-2">
+                <DestinationSkeleton isFeatured={true} isMobile={false} />
+                <DestinationSkeleton isFeatured={true} isMobile={false} />
+              </div>
+            ) : (
+              <div className="grid gap-8 md:grid-cols-2">
+                {featuredDestinations.slice(0, 2).map((dest) => (
+                  <DestinationCard
+                    key={dest.id}
+                    destination={dest}
+                    isFeatured={true}
+                    isMobile={false}
+                    shouldPreload={true}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -425,7 +589,7 @@ export default function DestinationsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
             className="mb-8"
           >
@@ -433,52 +597,75 @@ export default function DestinationsPage() {
               items={featuredDestinations}
               title="Featured Destinations"
               isFeatured={true}
+              isLoading={destinationsLoading}
             />
           </motion.div>
         )}
 
         {/* All Destinations Grid - Desktop View */}
         {!isMobile && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {regularDestinations.map((dest, index) => (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: Math.min(index * 0.1, 0.5) }}
-                viewport={{ once: true }}
-                key={dest.id}
-              >
-                <DestinationCard
-                  destination={dest}
-                  isFeatured={false}
-                  isMobile={false}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-        {/* All Destinations Carousel - Mobile View */}
-        {isMobile && (
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2>
+            {destinationsLoading ? (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {[...Array(8)].map((_, index) => (
+                  <DestinationSkeleton key={index} isFeatured={false} isMobile={false} />
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {regularDestinations.map((dest, index) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
+                    viewport={{ once: true }}
+                    key={dest.id}
+                  >
+                    <DestinationCard
+                      destination={dest}
+                      isFeatured={false}
+                      isMobile={false}
+                      shouldPreload={index < 4} // Preload first 4 images
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* All Destinations Carousels - Mobile View (Split into two) */}
+        {isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            viewport={{ once: true }}
             className="mb-8"
           >
+            {/* First Half Carousel */}
             <DestinationCarousel
-              items={regularDestinations}
+              items={firstHalfDestinations}
               title="Explore All Destinations"
+              isFeatured={false}
+              isLoading={destinationsLoading}
             />
+            
+            {/* Second Half Carousel */}
+            <div>
+              <DestinationCarousel
+                items={secondHalfDestinations}
+                title="More Amazing Destinations"
+                isFeatured={false}
+                isLoading={destinationsLoading}
+              />
+            </div>
           </motion.div>
         )}
 
@@ -491,7 +678,7 @@ export default function DestinationsPage() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
           className="mt-12 sm:mt-16 md:mt-20 bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-xl relative overflow-hidden text-center"
         >
