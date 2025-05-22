@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter, Playfair_Display } from "next/font/google";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // Make sure to specify weights for Playfair Display
 const inter = Inter({
