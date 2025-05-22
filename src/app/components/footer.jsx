@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Instagram, Facebook, Twitter, Mail, Phone, Linkedin } from 'lucide-react';
+import { Instagram, Twitter, Mail, Phone, Linkedin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -89,15 +89,7 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-white font-bold text-lg mb-4">Connect With Us</h3>
             <div className="flex justify-center md:justify-start gap-4 mb-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors"
-                aria-label="Visit our Facebook page"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
+              
               <a
                 href="https://instagram.com/andiamolux"
                 target="_blank"

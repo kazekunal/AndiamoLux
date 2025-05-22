@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Menu, X, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { ArrowRight, Menu, X, Instagram, Twitter, Linkedin } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from "next/image";
 
@@ -39,9 +39,6 @@ export default function Navbar() {
           <Link href="#about" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             About Us
           </Link>
-          <Link href="#" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
-            Plan
-          </Link>
           <Link href="#explore" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
             Explore
           </Link>
@@ -55,12 +52,12 @@ export default function Navbar() {
         </div>
 
         {/* Social Media Icons - right side */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-8">
+        <Link href="https://wa.me/917982841532" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
+            Plan Your Trip
+          </Link>
           <Link href="https://www.instagram.com/andiamolux/" className="text-white hover:text-white/80 transition-colors p-2">
             <Instagram size={20} />
-          </Link>
-          <Link href="#" className="text-white hover:text-white/80 transition-colors p-2">
-            <Facebook size={20} />
           </Link>
           <Link href="https://www.linkedin.com/company/andiamolux/about/?viewAsMember=true" className="text-white hover:text-white/80 transition-colors p-2">
             <Linkedin size={20} />
@@ -132,9 +129,6 @@ export default function Navbar() {
               
               {/* Social icons in mobile menu */}
               <div className="flex items-center space-x-6 pt-2">
-                <Link href="#" className="text-white hover:text-white/80 transition-colors">
-                  <Facebook size={20} />
-                </Link>
                 <Link href="https://www.linkedin.com/company/andiamolux/about/?viewAsMember=true" className="text-white hover:text-white/80 transition-colors">
                   <Linkedin size={20} />
                 </Link>

@@ -106,7 +106,7 @@ export default function AboutUsSection() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
                 <Link
-                  href="#book"
+                  href="https://wa.me/917982841532"
                   className="inline-flex h-14 items-center justify-center rounded-md bg-[#001737] px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group"
                 >
                   <span>Book your Journey</span>

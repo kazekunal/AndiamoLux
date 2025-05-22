@@ -4,6 +4,7 @@ import React from 'react'
 import { ArrowUpRight, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import Link from 'next/link'
 
 export default function ServicesPage() {
   const container = {
@@ -107,7 +108,7 @@ export default function ServicesPage() {
           </h1>
           <div className="w-20 h-1 bg-[#001737] mx-auto mb-6" />
           <p className="max-w-2xl mx-auto text-lg text-gray-600 leading-relaxed">
-            Experience curated journeys with exclusive access, expert guidance, and bespoke itineraries — designed to make every trip seamless and unforgettable.
+            Experience curated journeys with exclusive access, expert guidance, and bespoke itineraries, designed to make every trip seamless and unforgettable.
           </p>
         </motion.div>
 
@@ -165,10 +166,12 @@ export default function ServicesPage() {
                 </li>
                 ))}
               </ul>
+              <Link href="https://wa.me/917982841532">
               <button className="mt-8 inline-flex h-12 items-center justify-center rounded-md bg-[#001737] px-6 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group cursor-pointer">
                 <span>Schedule a Consultation</span>
                 <ArrowUpRight className="ml-2 h-4 w-4" />
               </button>
+              </Link>
             </div>
             <div className="relative h-64 md:h-80 rounded-xl overflow-hidden shadow-lg">
               <img 
