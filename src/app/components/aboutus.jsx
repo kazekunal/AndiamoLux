@@ -175,7 +175,7 @@ export default function ServicesPage() {
             </div>
             <div className="relative h-64 md:h-80 rounded-xl overflow-hidden shadow-lg">
               <img 
-                src="/hero2.jpg" 
+                src="/consultation.jpg" 
                 alt="Luxury travel planning" 
                 className="w-full h-full object-cover"
               />
