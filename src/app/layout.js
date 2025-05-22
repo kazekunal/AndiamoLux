@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} font-sans`}>
         {children}
+        <GoogleAnalytics gaId="G-HVL6VCQCWC" />
       </body>
     </html>
   );

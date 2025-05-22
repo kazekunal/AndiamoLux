@@ -89,9 +89,10 @@ const destinations = [
 
 // Isolated DestinationCard component for better code organization and memo potential
 const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) => {
+  // Fixed height classes with better mobile sizing
   const cardHeight = isFeatured
-    ? isMobile ? "h-[350px]" : "h-[400px]"
-    : isMobile ? "h-[250px]" : "h-[280px]";
+    ? isMobile ? "h-[450px]" : "h-[400px]" // Increased mobile height for featured cards
+    : isMobile ? "h-[320px]" : "h-[280px]"; // Increased mobile height for regular cards
 
   return (
     <Link
@@ -107,39 +108,53 @@ const DestinationCard = ({ destination, isFeatured = false, isMobile = false }) 
           sizes={isFeatured
             ? "(max-width: 768px) 100vw, 50vw"
             : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"}
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className={`object-cover transition-transform duration-700 group-hover:scale-105 ${
+            isMobile ? 'object-center' : '' // Better centering for mobile
+          }`}
           priority={isFeatured} // Load featured images with priority
           loading={isFeatured ? "eager" : "lazy"} // Lazy load non-featured images
-          quality={isFeatured ? 85 : 75} // Lower quality for non-featured images
+          quality={isMobile ? 90 : (isFeatured ? 85 : 75)} // Higher quality for mobile to reduce blur
           onError={(e) => {
             // Fallback for image loading errors
             e.target.onerror = null;
             e.target.src = "/placeholder.svg";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#001737]/60 to-transparent" />
+        {/* Enhanced gradient overlay for better text readability on mobile */}
+        <div className={`absolute inset-0 ${
+          isMobile 
+            ? 'bg-gradient-to-t from-[#001737] via-[#001737]/20 to-transparent' 
+            : 'bg-gradient-to-t from-[#001737]/20 to-transparent'
+        }`} />
 
-        <div className={`absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-${isFeatured ? '2' : '1.5'} rounded-full shadow-md z-10
+        <div className={`absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-${isFeatured ? '2' : '1.5'} rounded-full shadow-md z-10
           ${!isMobile && !isFeatured ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''}`}>
           <ArrowUpRight className={`h-${isFeatured ? '5' : '4'} w-${isFeatured ? '5' : '4'} text-[#001737]`} />
         </div>
 
-        <div className="absolute bottom-0 left-0 p-6">
-          <div className="flex items-center mb-1">
-            <MapPin className="h-3 w-3 text-white/80 mr-1" />
-            <span className="text-white/90 text-xs">{destination.tagline}</span>
+        {/* Enhanced text positioning and sizing for mobile */}
+        <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? 'p-5' : 'p-6'}`}>
+          <div className="flex items-center mb-2">
+            <MapPin className={`${isMobile ? 'h-4 w-4' : 'h-3 w-3'} text-white/90 mr-2`} />
+            <span className={`text-white/90 ${isMobile ? 'text-sm font-medium' : 'text-xs'}`}>
+              {destination.tagline}
+            </span>
           </div>
-          <h2 className={`mb-1 font-bold text-white ${
-            isFeatured ? (isMobile ? 'text-2xl' : 'text-3xl md:text-4xl') : 'text-lg md:text-xl'
+          <h2 className={`mb-2 font-bold text-white ${
+            isFeatured 
+              ? (isMobile ? 'text-3xl leading-tight' : 'text-3xl md:text-4xl') 
+              : (isMobile ? 'text-xl leading-tight' : 'text-lg md:text-xl')
           }`}>
             {destination.name}
           </h2>
           {isFeatured && (
             <>
-              <div className="w-12 h-1 bg-white/80 mb-4" />
-              <button className="inline-flex items-center text-sm font-medium text-white group-hover:text-white/90 transition-colors">
+              <div className={`${isMobile ? 'w-16 h-1' : 'w-12 h-1'} bg-white/80 mb-4`} />
+              <button className={`inline-flex items-center ${
+                isMobile ? 'text-base' : 'text-sm'
+              } font-medium text-white group-hover:text-white/90 transition-colors`}>
                 Discover more{" "}
-                <ChevronRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
+                <ChevronRight className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'} ml-1 transition-transform group-hover:translate-x-1`} />
               </button>
             </>
           )}
@@ -231,14 +246,13 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
     }, 300);
   }, [touchStart, touchEnd, goToNext, goToPrev]);
 
-  // Render all items but apply visibility optimizations
-  // This gives better mobile performance while ensuring proper layout
+  // Enhanced carousel with better mobile optimization
   return (
     <div className="relative mb-12">
-      <h2 className="text-2xl font-bold text-[#001737] mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>
 
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden rounded-2xl" // Added rounded corners to container
         ref={carouselRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -254,27 +268,23 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
           {items.map((dest, index) => (
             <div
               key={dest.id}
-              className="w-full flex-shrink-0 px-2"
+              className="w-full flex-shrink-0 px-1" // Reduced padding to minimize gaps
             >
-              {/* Apply conditional rendering for performance but handle edge cases */}
-              {(Math.abs(currentIndex - index) <= 1 ||
-                (currentIndex === 0 && index === items.length - 1) ||
-                (currentIndex === items.length - 1 && index === 0)) && (
-                <DestinationCard
-                  destination={dest}
-                  isFeatured={isFeatured}
-                  isMobile={true}
-                />
-              )}
+              {/* Render all items but optimize loading */}
+              <DestinationCard
+                destination={dest}
+                isFeatured={isFeatured}
+                isMobile={true}
+              />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Larger, more touch-friendly navigation arrows for mobile */}
+      {/* Enhanced navigation arrows with better positioning */}
       <button
         onClick={goToPrev}
-        className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/90 p-3 rounded-full shadow-md z-10 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737]"
+        className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm p-3 rounded-full shadow-lg z-20 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737] transition-all duration-200"
         aria-label="Previous destination"
       >
         <ChevronLeft className="h-6 w-6 text-[#001737]" />
@@ -282,20 +292,22 @@ const DestinationCarousel = ({ items, title, isFeatured = false }) => {
 
       <button
         onClick={goToNext}
-        className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/90 p-3 rounded-full shadow-md z-10 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737]"
+        className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/95 backdrop-blur-sm p-3 rounded-full shadow-lg z-20 hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#001737] transition-all duration-200"
         aria-label="Next destination"
       >
         <ChevronRight className="h-6 w-6 text-[#001737]" />
       </button>
 
-      {/* Larger, more touch-friendly pagination dots */}
-      <div className="flex justify-center mt-6 space-x-3">
+      {/* Enhanced pagination dots with better spacing */}
+      <div className="flex justify-center mt-8 space-x-2">
         {items.map((dest, idx) => (
           <button
             key={dest.id}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-3 w-3 rounded-full transition-colors ${
-              currentIndex === idx ? 'bg-[#001737]' : 'bg-gray-300'
+            className={`h-2.5 w-2.5 rounded-full transition-all duration-200 ${
+              currentIndex === idx 
+                ? 'bg-[#001737] scale-125' 
+                : 'bg-gray-300 hover:bg-gray-400'
             }`}
             aria-label={`Go to ${dest.name}`}
           />
