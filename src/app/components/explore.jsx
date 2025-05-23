@@ -100,6 +100,13 @@ const destinations = [
     image: "/singapore.jpg",
     
   },
+  {
+    id: "India",
+    name: "India",
+    tagline: "Colors of Unity",
+    image: "/india.jpg",
+    
+  }
 ]
 
 // Image preloader utility
