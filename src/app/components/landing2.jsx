@@ -339,7 +339,6 @@
 //     </div>
 //   );
 // }
-
 'use client';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -561,14 +560,70 @@ export default function HeroSection() {
               muted
               loop
               playsInline
-              className="h-full w-full object-cover md:object-cover" // Responsive video fitting
-              preload="none" // Let us control loading manually
+              className="h-full w-full object-cover md:object-cover"
+              preload="none"
               onLoadedData={() => handleVideoLoad(index)}
               poster={`/poster${index + 1}.png`}
               disablePictureInPicture
             />
           </div>
         ))}
+      </div>
+
+      {/* Logo - top-left on desktop, centered above title on mobile */}
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 hidden sm:block">
+        <img 
+          src="/logo.png" 
+          alt="Company Logo" 
+          className="h-12 w-auto md:h-16 filter drop-shadow-lg"
+        />
+      </div>
+      
+      {/* Mobile logo - centered above title */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 sm:hidden" style={{ marginTop: '-150px' }}>
+        <img 
+          src="/logo.png" 
+          alt="Company Logo" 
+          className="h-16 w-auto filter drop-shadow-lg"
+        />
+      </div>
+
+      {/* Center text overlay */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
+          <motion.h1 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            Andiamo Lux - Let's Go Luxury
+          </motion.h1>
+          <motion.h2 
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light mb-4 sm:mb-6 leading-tight opacity-90"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          >
+            Luxury Travel, Curated by Passionate Experts
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mb-4 sm:mb-6 opacity-80"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+          >
+            Redefining Modern Travel - One Experience at a Time
+          </motion.p>
+          <motion.p 
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-light opacity-75"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+          >
+            Seamless, Stylish, Andiamo Lux
+          </motion.p>
+        </div>
       </div>
 
       {/* Video navigation dots */}
@@ -596,7 +651,7 @@ export default function HeroSection() {
             animate={{ width: '100%' }}
             key={currentVideo}
             transition={{
-              duration: VIDEO_DURATION / 1000, // Convert to seconds
+              duration: VIDEO_DURATION / 1000,
               ease: 'linear',
             }}
           />
@@ -629,8 +684,8 @@ export default function HeroSection() {
         </button>
       </div>
 
-      {/* Overlay for better text readability on both mobile and desktop */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40" />
     </div>
   );
 }
