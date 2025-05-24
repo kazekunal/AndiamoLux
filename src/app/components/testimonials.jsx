@@ -8,7 +8,7 @@ const testimonials = [
     name: "Priya Sharma",
     location: "Mumbai, India",
     trip: "European Adventure",
-    quote: "Andiamo Lux planned the most incredible European adventure for our family. Every detail was meticulously handled, from flights to unique local experiences. Truly a five-star service!",
+    quote: "We traveled as a family to Andaman with Andiamo Lux, and it was seamless. They arranged our flights, comfortable stays, and fun island tours. Kids loved the beach activities, and we loved the stress-free planning.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=PS"
   },
   {
@@ -16,7 +16,7 @@ const testimonials = [
     name: "Rajesh Kumar",
     location: "Bengaluru, India",
     trip: "Luxury Maldives Getaway",
-    quote: "Our Maldives honeymoon was a dream come true, thanks to Andiamo Lux. The resort they picked was beyond perfect, and their team was always available for any queries. Highly recommend!",
+    quote: "My solo trip to Georgia was made special by Andiamo Lux. They took care of my visa, airport transfers, and arranged local guides for sightseeing. It felt safe and personal throughout.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=RK"
   },
   {
@@ -24,16 +24,8 @@ const testimonials = [
     name: "Ananya Singh",
     location: "New Delhi, India",
     trip: "Cultural Tour of Japan",
-    quote: "I've always wanted to explore Japan, and Andiamo Lux made it happen flawlessly. Their knowledge of local culture and hidden gems made the trip unforgettable. Exceptional service!",
+    quote: "For our honeymoon in Maldives, Andiamo Lux organized a private villa, sunset cruises, and spa treatments. Their attention to detail made our trip truly romantic and unforgettable.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=AS"
-  },
-  {
-    id: 4,
-    name: "Vikram Patel",
-    location: "Ahmedabad, India",
-    trip: "African Safari",
-    quote: "The African safari organized by Andiamo Lux was breathtaking. They took care of all the complex logistics, allowing us to just soak in the experience. Will definitely book with them again.",
-    avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=VP"
   }
 ];
 
