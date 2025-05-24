@@ -346,7 +346,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
           <motion.h1 
-            className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight font-[Georgia]"
+            className="text-3xl sm:text-3xl md:text-3xl lg:text-4xl font-bold leading-tight"
             key={`text-${currentVideo}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
