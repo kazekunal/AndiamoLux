@@ -22,7 +22,6 @@ const destinations = [
     name: "Dubai",
     tagline: "Desert Lux",
     image: "/dub.jpg",
-    featured: true,
   },
   {
     id: "Andaman & Nicobar Islands",
@@ -50,7 +49,6 @@ const destinations = [
     name: "Bali",
     tagline: "Eternal Bali",
     image: "/hero4.jpg",
-    // featured: true,
   },
   {
     id: "Thailand",
@@ -63,7 +61,6 @@ const destinations = [
     name: "Maldives",
     tagline: "Ocean's Embrace",
     image: "/maldives.jpg",
-    featured: true,
   },
   {
     id: "Bhutan",
@@ -73,18 +70,10 @@ const destinations = [
     
   },
   {
-    id: "Nepal",
-    name: "Nepal",
-    tagline: "Roof of the World",
-    image: "/nepal.jpg",
-    
-  },
-  {
     id: "Seychelles",
     name: "Seychelles",
     tagline: "Serene Shores",
     image: "/sey.jpg",
-    // featured: true,
   },
   {
     id: "Sri Lanka",
@@ -160,7 +149,7 @@ const DestinationSkeleton = ({ isFeatured = false, isMobile = false }) => {
   )
 }
 
-// Optimized DestinationCard component with smart loading
+// Optimized DestinationCard component with smart loading (non-clickable)
 const DestinationCard = ({ 
   destination, 
   isFeatured = false, 
@@ -181,9 +170,8 @@ const DestinationCard = ({
   const priority = shouldPreload || isFeatured
 
   return (
-    <Link
-      href="#"
-      className={`group relative overflow-hidden rounded-${isFeatured ? '3xl' : '2xl'} shadow-lg block ${cardHeight} w-full
+    <div
+      className={`group relative overflow-hidden rounded-${isFeatured ? '3xl' : '2xl'} shadow-lg ${cardHeight} w-full
         ${!isMobile ? "transform transition duration-500 hover:shadow-xl hover:-translate-y-2" : ""}`}
     >
       <div className="relative h-full w-full">
@@ -248,17 +236,17 @@ const DestinationCard = ({
           {isFeatured && (
             <>
               <div className={`${isMobile ? 'w-16 h-1' : 'w-12 h-1'} bg-white/80 mb-4`} />
-              <button className={`inline-flex items-center ${
+              <div className={`inline-flex items-center ${
                 isMobile ? 'text-base' : 'text-sm'
               } font-medium text-white group-hover:text-white/90 transition-colors`}>
                 Discover more{" "}
                 <ChevronRight className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'} ml-1 transition-transform group-hover:translate-x-1`} />
-              </button>
+              </div>
             </>
           )}
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -372,7 +360,7 @@ const DestinationCarousel = ({ items, title, isFeatured = false, isLoading = fal
   if (isLoading) {
     return (
       <div className="relative mb-12">
-        <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>
+        {title && <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>}
         <div className="relative overflow-hidden rounded-2xl">
           <DestinationSkeleton isFeatured={isFeatured} isMobile={true} />
         </div>
@@ -388,7 +376,7 @@ const DestinationCarousel = ({ items, title, isFeatured = false, isLoading = fal
 
   return (
     <div className="relative mb-12">
-      <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>
+      {title && <h2 className="text-2xl font-bold text-[#001737] mb-6">{title}</h2>}
 
       <Carousel
         setApi={setApi}
@@ -484,8 +472,7 @@ export default function DestinationsPage() {
     const preloadCriticalImages = async () => {
       if (isComponentLoading) return
 
-      const featuredDestinations = destinations.filter(dest => dest.featured)
-      const criticalImages = featuredDestinations.slice(0, 2).map(dest => dest.image)
+      const criticalImages = destinations.slice(0, 4).map(dest => dest.image)
       
       try {
         await Promise.allSettled(criticalImages.map(preloadImage))
@@ -502,21 +489,22 @@ export default function DestinationsPage() {
     preloadCriticalImages()
   }, [isComponentLoading])
 
-  // Memoize filtered destinations
-  const { featuredDestinations, regularDestinations, firstHalfDestinations, secondHalfDestinations } = useMemo(() => {
-    const featured = destinations.filter((dest) => dest.featured)
-    const regular = destinations.filter((dest) => !dest.featured)
+  // Memoize filtered destinations and split for mobile carousels
+  const { allDestinations, firstThirdDestinations, secondThirdDestinations, thirdThirdDestinations } = useMemo(() => {
+    // All destinations combined (no separation of featured/regular)
+    const all = destinations
     
-    // Split regular destinations into two halves for mobile carousels
-    const midpoint = Math.ceil(regular.length / 2)
-    const firstHalf = regular.slice(0, midpoint)
-    const secondHalf = regular.slice(midpoint)
+    // Split all destinations into three parts for mobile carousels
+    const thirdSize = Math.ceil(all.length / 3)
+    const firstThird = all.slice(0, thirdSize)
+    const secondThird = all.slice(thirdSize, thirdSize * 2)
+    const thirdThird = all.slice(thirdSize * 2)
     
     return {
-      featuredDestinations: featured,
-      regularDestinations: regular,
-      firstHalfDestinations: firstHalf,
-      secondHalfDestinations: secondHalf
+      allDestinations: all,
+      firstThirdDestinations: firstThird,
+      secondThirdDestinations: secondThird,
+      thirdThirdDestinations: thirdThird
     }
   }, [])
 
@@ -560,56 +548,7 @@ export default function DestinationsPage() {
           </p>
         </motion.div>
 
-        {/* Featured Destinations - Desktop View */}
-        {!isMobile && featuredDestinations.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <h2 className="text-2xl font-bold text-[#001737] mb-8">Featured Destinations</h2>
-            {destinationsLoading ? (
-              <div className="grid gap-8 md:grid-cols-2">
-                <DestinationSkeleton isFeatured={true} isMobile={false} />
-                <DestinationSkeleton isFeatured={true} isMobile={false} />
-              </div>
-            ) : (
-              <div className="grid gap-8 md:grid-cols-2">
-                {featuredDestinations.slice(0, 2).map((dest) => (
-                  <DestinationCard
-                    key={dest.id}
-                    destination={dest}
-                    isFeatured={true}
-                    isMobile={false}
-                    shouldPreload={true}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        )}
-
-        {/* Featured Destinations Carousel - Mobile View */}
-        {isMobile && featuredDestinations.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
-            <DestinationCarousel
-              items={featuredDestinations}
-              title="Featured Destinations"
-              isFeatured={true}
-              isLoading={destinationsLoading}
-            />
-          </motion.div>
-        )}
-
-        {/* All Destinations Grid - Desktop View */}
+        {/* All Destinations Grid - Desktop View (includes featured destinations) */}
         {!isMobile && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -617,16 +556,16 @@ export default function DestinationsPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2>
+            {/* <h2 className="text-2xl font-bold text-[#001737] mb-8">Explore All Destinations</h2> */}
             {destinationsLoading ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {[...Array(8)].map((_, index) => (
+                {[...Array(12)].map((_, index) => (
                   <DestinationSkeleton key={index} isFeatured={false} isMobile={false} />
                 ))}
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {regularDestinations.map((dest, index) => (
+                {allDestinations.map((dest, index) => (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -636,7 +575,7 @@ export default function DestinationsPage() {
                   >
                     <DestinationCard
                       destination={dest}
-                      isFeatured={false}
+                      isFeatured={dest.featured}
                       isMobile={false}
                       shouldPreload={index < 4} // Preload first 4 images
                     />
@@ -647,7 +586,7 @@ export default function DestinationsPage() {
           </motion.div>
         )}
 
-        {/* All Destinations Carousels - Mobile View (Split into two) */}
+        {/* All Destinations Carousels - Mobile View (Split into three with single heading) */}
         {isMobile && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -656,23 +595,32 @@ export default function DestinationsPage() {
             viewport={{ once: true }}
             className="mb-8"
           >
-            {/* First Half Carousel */}
+            {/* Single heading for all three carousels */}
+            <h2 className="text-2xl font-bold text-[#001737] mb-6">Explore All Destinations</h2>
+            
+            {/* First Third Carousel */}
             <DestinationCarousel
-              items={firstHalfDestinations}
-              title="Explore All Destinations"
+              items={firstThirdDestinations}
+              title={null} // No title for individual carousels
               isFeatured={false}
               isLoading={destinationsLoading}
             />
             
-            {/* Second Half Carousel */}
-            <div>
-              <DestinationCarousel
-                items={secondHalfDestinations}
-                title="More Amazing Destinations"
-                isFeatured={false}
-                isLoading={destinationsLoading}
-              />
-            </div>
+            {/* Second Third Carousel */}
+            <DestinationCarousel
+              items={secondThirdDestinations}
+              title={null} // No title for individual carousels
+              isFeatured={false}
+              isLoading={destinationsLoading}
+            />
+            
+            {/* Third Third Carousel */}
+            <DestinationCarousel
+              items={thirdThirdDestinations}
+              title={null} // No title for individual carousels
+              isFeatured={false}
+              isLoading={destinationsLoading}
+            />
           </motion.div>
         )}
 

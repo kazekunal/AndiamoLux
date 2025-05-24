@@ -37,7 +37,7 @@ export default function ServicesPage() {
     },
     {
       title: 'Destination Expertise',
-      description: 'From Seychelles to Santorini, Dubai to Ubud, we know luxury where it lives.',
+      description: 'We know where luxury checks in and the world checks out.',
       image: 'lux.jpg',
       icon: '✦',
     },
