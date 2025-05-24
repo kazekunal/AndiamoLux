@@ -597,7 +597,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            Andiamo Lux - Let's Go Luxury
+            Andiamo Lux <br/> Let's Go Luxury
           </motion.h1>
           <motion.h2 
             className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light mb-4 sm:mb-6 leading-tight opacity-90"
@@ -686,6 +686,9 @@ export default function HeroSection() {
 
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 md:hidden" />
     </div>
+
+    
   );
 }
