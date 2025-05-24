@@ -293,6 +293,7 @@ export default function HeroSection() {
       >
         <source src="/bg.mp3" type="audio/mpeg" />
         <source src="/bg.ogg" type="audio/ogg" />
+        <source src="/bg.wav" type="audio/wav"/>
         {/* <source src="/background-music.wav" type="audio/wav" /> */}
         Your browser does not support the audio element.
       </audio>
