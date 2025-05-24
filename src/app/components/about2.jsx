@@ -85,22 +85,31 @@ export default function AboutUsSection() {
             className="space-y-10"
           >
             <div className="flex flex-col gap-6">
-              <h2 className="font-playfair text-4xl text-[#001737] font-bold tracking-tighter sm:text-5xl lg:text-6xl">
+              <h2 className="font-playfair text-2xl text-[#001737] font-bold tracking-tighter sm:text-4xl lg:text-5xl">
                 We design each trip based on your travel style, not off-the-shelf packages.
               </h2>
 
               <div className="w-20 h-1 bg-[#001737]" />
 
               <div className="space-y-6 text-gray-600 text-lg">
-                <p className="font-playfair leading-relaxed">
-                  At Andiamo Lux, we believe true luxury lies in the details. We bring insider access, curated
-                  partnerships, and personal attention to every itinerary.
-                </p>
-                <p className="font-sans leading-relaxed">
-                  From overwater villas in the Maldives to private vineyard dinners in Georgia, our experiences go
-                  beyond the ordinary, they're designed for those who expect more.
-                </p>
-              </div>
+              <p className="font-playfair leading-relaxed">
+                At Andiamo Lux, we craft bespoke travel experiences for those who seek more than just a holiday.
+              </p>
+              <p className="font-sans leading-relaxed">
+                Each journey is designed around <strong>YOU</strong>.
+              </p>
+              <p className="font-sans leading-relaxed">
+                Your pace, your tastes, your idea of indulgence. No templates. No off-the-shelf plans.
+              </p>
+              <p className="font-sans leading-relaxed">
+                Whether it’s overwater villas in the Maldives, heritage escapes in Georgia, or tropical getaways closer to home,
+                we curate seamless, detail-rich experiences through our trusted global partners.
+              </p>
+              <p className="font-sans leading-relaxed">
+                Think of us as your personal travel concierge, handling every element, so you travel effortlessly and luxuriously.
+              </p>
+            </div>
+
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
