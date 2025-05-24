@@ -91,7 +91,7 @@ export default function AboutUsSection() {
 
               <div className="w-20 h-1 bg-[#001737]" />
 
-              <div className="space-y-6 text-gray-600 text-lg">
+              <div className="space-y-2 text-gray-600 text-lg">
               <p className="font-playfair leading-relaxed">
                 At Andiamo Lux, we craft bespoke travel experiences for those who seek more than just a holiday.
               </p>
