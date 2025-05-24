@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Play, Pause } from 'lucide-react';
 
 // Single array of videos - no separate mobile videos needed
 const videos = [
@@ -37,10 +37,37 @@ export default function HeroSection() {
   const [touchEnd, setTouchEnd] = useState(0);
   const [videosLoaded, setVideosLoaded] = useState({});
   const [isVisible, setIsVisible] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isAudioLoaded, setIsAudioLoaded] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   
   const videoRefs = useRef([]);
+  const audioRef = useRef(null);
   const intervalRef = useRef(null);
   const observerRef = useRef(null);
+
+  // Audio setup and management
+  useEffect(() => {
+    // Initialize audio
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3; // Set volume to 30%
+      audioRef.current.loop = true;
+      // Audio starts paused - user must click play
+    }
+  }, []);
+
+  // Handle audio visibility changes
+  useEffect(() => {
+    if (audioRef.current) {
+      if (!isVisible && isPlaying) {
+        // Pause when not visible
+        audioRef.current.pause();
+      } else if (isVisible && isPlaying) {
+        // Resume when visible again
+        audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
+      }
+    }
+  }, [isVisible, isPlaying]);
 
   // Intersection observer to pause videos when not visible
   useEffect(() => {
@@ -141,6 +168,47 @@ export default function HeroSection() {
     }
   }, [currentVideo]);
 
+  // Handle audio load
+  const handleAudioLoad = useCallback(() => {
+    console.log('Audio loaded successfully');
+    setIsAudioLoaded(true);
+    setAudioError(false);
+  }, []);
+
+  // Handle audio error
+  const handleAudioError = useCallback((e) => {
+    console.error('Audio loading error:', e);
+    setAudioError(true);
+    setIsAudioLoaded(false);
+  }, []);
+
+  // Handle play/pause toggle
+  const togglePlayPause = useCallback(async () => {
+    if (!audioRef.current) {
+      console.error('Audio ref not available');
+      return;
+    }
+    
+    if (!isAudioLoaded) {
+      console.error('Audio not loaded yet');
+      return;
+    }
+    
+    if (isPlaying) {
+      // Pause
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      // Play
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error('Audio play prevented:', error);
+      }
+    }
+  }, [isPlaying, isAudioLoaded]);
+
   // Handle video change with memoized callback
   const handleVideoChange = useCallback((index) => {
     if (index === currentVideo) return;
@@ -213,6 +281,22 @@ export default function HeroSection() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Background Audio */}
+      <audio
+        ref={audioRef}
+        preload="metadata"
+        onLoadedData={handleAudioLoad}
+        onCanPlayThrough={handleAudioLoad}
+        onError={handleAudioError}
+        onLoadStart={() => console.log('Audio loading started')}
+        onLoadedMetadata={() => console.log('Audio metadata loaded')}
+      >
+        <source src="/bg.mp3" type="audio/mpeg" />
+        <source src="/bg.ogg" type="audio/ogg" />
+        {/* <source src="/background-music.wav" type="audio/wav" /> */}
+        Your browser does not support the audio element.
+      </audio>
+
       {/* Background videos with optimized rendering */}
       <div className="absolute inset-0">
         {videos.map((video, index) => (
@@ -258,8 +342,6 @@ export default function HeroSection() {
         />
       </div>
 
-      
-
       {/* Center text overlay - changes with each video */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
@@ -273,10 +355,46 @@ export default function HeroSection() {
           >
             {videoTexts[currentVideo].title}
           </motion.h1>
+          
+          {/* Music Control Button */}
+          <motion.div 
+            className="mt-6 flex justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          >
+            <button
+              onClick={togglePlayPause}
+              disabled={!isAudioLoaded}
+              className="flex items-center space-x-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 hover:bg-white/30 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
+            >
+              <motion.div
+                key={isPlaying ? 'playing' : 'paused'}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isPlaying ? (
+                  <Pause size={16} className="text-white" />
+                ) : (
+                  <Play size={16} className="text-white ml-0.5" />
+                )}
+              </motion.div>
+              <span className="text-white text-sm font-medium">
+                {audioError 
+                  ? 'Audio Error' 
+                  : !isAudioLoaded 
+                    ? 'Loading...' 
+                    : isPlaying 
+                      ? 'Mute' 
+                      : 'Unmute'
+                }
+              </span>
+            </button>
+          </motion.div>
         </div>
       </div>
-
-      
 
       {/* Video navigation dots */}
       <div className="absolute bottom-20 sm:bottom-32 left-1/2 flex -translate-x-1/2 space-x-3 z-20">
