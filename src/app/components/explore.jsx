@@ -24,8 +24,8 @@ const destinations = [
     image: "/dub.jpg",
   },
   {
-    id: "Andaman & Nicobar Islands",
-    name: "Andaman & Nicobar Islands",
+    id: "Andaman & Nicobar",
+    name: "Andaman & Nicobar",
     tagline: "Island Reverie",
     image: "/island.jpg",
     
@@ -640,17 +640,13 @@ export default function DestinationsPage() {
           <div className="absolute top-0 left-1/2 w-32 md:w-40 h-32 md:h-40 bg-[#f0f4ff] rounded-full -translate-x-1/2 -translate-y-1/2 -z-10" />
 
           <h2 className="text-2xl sm:text-3xl font-bold text-[#001737] mb-3 sm:mb-4">Ready to Begin Your Journey?</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
-            Let our travel experts craft the perfect itinerary for your next adventure. Whether you're seeking
-            relaxation, adventure, or cultural immersion, we'll create an experience tailored just for you.
-          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
               <Link
                 href="https://wa.me/917982841532"
                 className="inline-flex h-12 sm:h-14 items-center justify-center rounded-md bg-[#001737] px-6 sm:px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 w-full sm:w-auto"
               >
-                <span>Plan Your Trip</span>
+                <span>Plan Our Trip</span>
                 <ArrowUpRight className="ml-2 h-4 w-4" />
               </Link>
             </motion.div>

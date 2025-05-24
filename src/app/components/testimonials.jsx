@@ -5,27 +5,27 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
+    name: "Ananya Singh",
+    location: "New Delhi, India",
+    trip: "Honeymoon in Maldives",
+    quote: "For our honeymoon in Maldives, Andiamo Lux organized a private villa, sunset cruises, and spa treatments. Their attention to detail made our trip truly romantic and unforgettable.",
+    avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=AS"
+  },
+  {
+    id: 2,
     name: "Priya Sharma",
     location: "Mumbai, India",
-    trip: "European Adventure",
+    trip: "Family to Andaman",
     quote: "We traveled as a family to Andaman with Andiamo Lux, and it was seamless. They arranged our flights, comfortable stays, and fun island tours. Kids loved the beach activities, and we loved the stress-free planning.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=PS"
   },
   {
-    id: 2,
+    id: 3,
     name: "Rajesh Kumar",
     location: "Bengaluru, India",
     trip: "Luxury Maldives Getaway",
     quote: "My solo trip to Georgia was made special by Andiamo Lux. They took care of my visa, airport transfers, and arranged local guides for sightseeing. It felt safe and personal throughout.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=RK"
-  },
-  {
-    id: 3,
-    name: "Ananya Singh",
-    location: "New Delhi, India",
-    trip: "Cultural Tour of Japan",
-    quote: "For our honeymoon in Maldives, Andiamo Lux organized a private villa, sunset cruises, and spa treatments. Their attention to detail made our trip truly romantic and unforgettable.",
-    avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=AS"
   }
 ];
 
