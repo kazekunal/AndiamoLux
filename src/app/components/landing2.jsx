@@ -573,7 +573,7 @@ export default function HeroSection() {
       {/* Logo - top-left on desktop, centered above title on mobile */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 hidden sm:block">
         <img 
-          src="/logo.png" 
+          src="/logo_3.png" 
           alt="Company Logo" 
           className="h-12 w-auto md:h-16 filter drop-shadow-lg"
         />
