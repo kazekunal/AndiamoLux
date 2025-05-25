@@ -11,6 +11,25 @@ import PremiumServices from "./components/services";
 import HeroSection from './components/landing2';
 import AboutSection from './components/about2';
 
+export const metadata = {
+  title: "Andiamo Lux - Personalized Luxury Travel Planning & Bespoke Experiences",
+  description: "From overwater villas in the Maldives to private vineyard dinners in Georgia, our experiences go beyond the ordinary. Discover personalized luxury travel planning with Andiamo Lux.",
+  keywords: "Andiamo Lux, luxury travel, personalized travel planning, travel advisors, bespoke travel experiences, luxury vacations, travel agency",
+  openGraph: {
+    title: "Andiamo Lux - Personalized Luxury Travel Planning",
+    description: "From overwater villas in the Maldives to private vineyard dinners in Georgia, our experiences go beyond the ordinary.",
+    url: "https://www.andiamolux.com",
+    siteName: "Andiamo Lux",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://www.andiamolux.com",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function Home() {
   const phoneNumber = "917982841532"; // Store phone number as a variable
