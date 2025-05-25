@@ -824,7 +824,7 @@ export default function HeroSection() {
         <motion.img 
           src="/logo_3.png" 
           alt="Company Logo" 
-          className="h-20 w-auto sm:h-20 md:h-20 filter drop-shadow-lg"
+          className="h-16 w-auto sm:h-20 md:h-20 filter drop-shadow-lg"
           key={`logo-${currentVideo}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -836,7 +836,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <div className="text-center text-white px-4 sm:px-6 max-w-4xl mx-auto">
           <motion.h1 
-            className="text-3xl sm:text-3xl md:text-3xl lg:text-4xl font-bold leading-tight"
+            className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl leading-tight"
             key={`text-${currentVideo}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
