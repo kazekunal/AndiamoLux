@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 
 export default function AboutUsSection() {
   return (
-    <section id="about-section" className="relative overflow-hidden bg-[#f8f8f8]">
+    <section id='about'  className="relative overflow-hidden bg-[#f8f8f8]">
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#f0f4ff] opacity-50 blur-3xl -z-10" />
       <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-[#f0f7ff] opacity-60 blur-3xl -z-10" />

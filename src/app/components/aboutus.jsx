@@ -83,7 +83,6 @@ export default function ServicesPage() {
 
   return (
     <div 
-      id='about' 
       className="relative overflow-hidden bg-[#f8f8f8] px-4 py-20 sm:px-6 lg:px-8 min-h-screen"
     >
       {/* Decorative elements */}
