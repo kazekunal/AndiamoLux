@@ -646,7 +646,7 @@ export default function DestinationsPage() {
                 href="https://wa.me/917982841532"
                 className="inline-flex h-12 sm:h-14 items-center justify-center rounded-md bg-[#001737] px-6 sm:px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 w-full sm:w-auto"
               >
-                <span>Plan Our Trip</span>
+                <span>Plan Trip</span>
                 <ArrowUpRight className="ml-2 h-4 w-4" />
               </Link>
             </motion.div>

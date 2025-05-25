@@ -54,7 +54,7 @@ export default function Navbar() {
         {/* Social Media Icons - right side */}
         <div className="hidden md:flex items-center space-x-8">
         <Link href="https://wa.me/917982841532" className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors">
-            Plan Your Trip
+            Plan Trip
           </Link>
           <Link href="https://www.instagram.com/andiamolux/" className="text-white hover:text-white/80 transition-colors p-2">
             <Instagram size={20} />
@@ -117,7 +117,7 @@ export default function Navbar() {
                 className="text-lg font-medium tracking-wide text-white hover:text-white/80 transition-colors"
                 onClick={toggleMenu}
               >
-                Plan
+                Plan Trip
               </Link>
               <Link 
                 href="#explore" 

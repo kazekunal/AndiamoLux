@@ -15,7 +15,7 @@ const testimonials = [
     id: 2,
     name: "Priya Sharma",
     location: "Mumbai, India",
-    trip: "Family to Andaman",
+    trip: "Family Trip to Andaman & Nicobar Islands",
     quote: "We traveled as a family to Andaman with Andiamo Lux, and it was seamless. They arranged our flights, comfortable stays, and fun island tours. Kids loved the beach activities, and we loved the stress-free planning.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=PS"
   },
@@ -23,7 +23,7 @@ const testimonials = [
     id: 3,
     name: "Rajesh Kumar",
     location: "Bengaluru, India",
-    trip: "Luxury Maldives Getaway",
+    trip: "Solo trip to Georgia",
     quote: "My solo trip to Georgia was made special by Andiamo Lux. They took care of my visa, airport transfers, and arranged local guides for sightseeing. It felt safe and personal throughout.",
     avatar: "https://placehold.co/100x100/E2E8F0/4A5568?text=RK"
   }
