@@ -63,16 +63,16 @@ const Footer = () => {
                   FAQ
                 </Link>
               </li> */}
-              {/* <li>
-                <Link href="/terms" className="text-gray-300 hover:text-white transition-colors text-sm">
+              <li>
+                <Link href="/terms_new" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/privacy_new" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Privacy Policy
                 </Link>
-              </li> */}
+              </li>
               {/* <li>
                 <Link href="/booking" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Booking Policy
