@@ -110,27 +110,27 @@ export default function AboutUsSection() {
 
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                <Link
-                  href="https://wa.me/917982841532"
-                  className="inline-flex h-14 items-center justify-center rounded-md bg-[#001737] px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group"
-                >
-                  <span>Book your Journey</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </motion.div>
+            <div className="flex flex-row gap-4 pt-4">
+  <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+    <Link
+      href="https://wa.me/917982841532"
+      className="inline-flex h-14 items-center justify-center rounded-md bg-[#001737] px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group"
+    >
+      <span>Book your Journey</span>
+      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </Link>
+  </motion.div>
 
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                <Link
-                  href="#explore"
-                  className="inline-flex h-14 items-center justify-center rounded-md border border-[#001737]/20 bg-white px-8 text-sm font-medium text-[#001737] shadow-lg transition-colors hover:bg-[#f0f4ff] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group"
-                >
-                  <span>Explore Destinations</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </motion.div>
-            </div>
+  <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+    <Link
+      href="#explore"
+      className="inline-flex h-14 items-center justify-center rounded-md border border-[#001737]/20 bg-white px-8 text-sm font-medium text-[#001737] shadow-lg transition-colors hover:bg-[#f0f4ff] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 group"
+    >
+      <span>Explore Destinations</span>
+      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </Link>
+  </motion.div>
+</div>
           </motion.div>
         </div>
 
