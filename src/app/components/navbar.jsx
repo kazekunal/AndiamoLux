@@ -81,7 +81,7 @@ export default function Navbar() {
               <Image
                 src="/logo_3.png"
                 alt="Andiamo Lux Logo"
-                width={100}
+                width={70}
                 height={32}
                 className="h-auto"
               />
