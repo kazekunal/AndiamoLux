@@ -6,9 +6,9 @@ import { ChevronDown, Play, Pause } from 'lucide-react';
 // Single array of videos - no separate mobile videos needed
 const videos = [
   '/video1.mp4',
-  '/video2.mp4',
-  '/video3.mp4',
-  '/video4.mp4',
+  // '/video2.mp4',
+  // '/video3.mp4',
+  // '/video4.mp4',
 ];
 
 // Video transition timing constants
