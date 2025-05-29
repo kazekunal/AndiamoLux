@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Instagram, Twitter, Mail, Phone, Linkedin } from 'lucide-react';
+import { Instagram, Twitter, Mail, Phone, Linkedin, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,6 +15,14 @@ const Footer = () => {
             <p className="text-sm mb-4">
               Reimagining travel experiences with quality, comfort, and style in mind.
             </p>
+            <div className="mb-4">
+              <div className="flex justify-center md:justify-start items-start gap-2 text-sm">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-400 text-xs leading-relaxed">
+                  Office No.1A, 2nd Floor, Indure House, Savitri Cinema Complex Greater Kailash 2, New Delhi - 110048
+                </span>
+              </div>
+            </div>
             <div className="flex justify-center md:justify-start">
               <Image
                 src="/logo_new.png" 

@@ -62,9 +62,9 @@ export default function ServicesPage() {
           alt={card.title}
           className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute top-4 right-4 rounded-full bg-white/90 backdrop-blur-sm p-2 shadow-md z-20 transform transition-transform duration-300 group-hover:rotate-45">
+        {/* <div className="absolute top-4 right-4 rounded-full bg-white/90 backdrop-blur-sm p-2 shadow-md z-20 transform transition-transform duration-300 group-hover:rotate-45">
           <ArrowUpRight className="h-5 w-5 text-[#001737]" />
-        </div>
+        </div> */}
         <div className="absolute top-4 left-4 z-20">
           <span className="text-xl text-white/90">{card.icon}</span>
         </div>

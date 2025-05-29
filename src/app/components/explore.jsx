@@ -215,7 +215,7 @@ const DestinationCard = ({
         {/* Arrow icon */}
         <div className={`absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-${isFeatured ? '2' : '1.5'} rounded-full shadow-md z-10
           ${!isMobile && !isFeatured ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''}`}>
-          <ArrowUpRight className={`h-${isFeatured ? '5' : '4'} w-${isFeatured ? '5' : '4'} text-[#001737]`} />
+          {/* <ArrowUpRight className={`h-${isFeatured ? '5' : '4'} w-${isFeatured ? '5' : '4'} text-[#001737]`} /> */}
         </div>
 
         {/* Content */}
@@ -543,8 +543,9 @@ export default function DestinationsPage() {
           <h1 className="mb-6 text-3xl sm:text-4xl font-bold text-[#001737] md:text-5xl lg:text-6xl">Your Journey, Your Way</h1>
           <div className="w-16 sm:w-20 h-1 bg-[#001737] mx-auto mb-4 sm:mb-6" />
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-gray-600 leading-relaxed px-4 sm:px-0">
-            Explore handpicked escapes designed to inspire, immerse, and indulge. From tropical retreats to cultural
-            havens, each destination promises an experience beyond the ordinary.
+          We bring the world to your fingertips. with destinations curated to spark your imagination.
+From there, every choice is yours. Whether it’s tropical serenity or cultural immersion,
+you decide how your story unfolds.
           </p>
         </motion.div>
 
@@ -647,7 +648,7 @@ export default function DestinationsPage() {
                 className="inline-flex h-12 sm:h-14 items-center justify-center rounded-md bg-[#001737] px-6 sm:px-8 text-sm font-medium text-white shadow-lg transition-colors hover:bg-[#001737]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 w-full sm:w-auto"
               >
                 <span>Plan Trip</span>
-                <ArrowUpRight className="ml-2 h-4 w-4" />
+                {/* <ArrowUpRight className="ml-2 h-4 w-4" /> */}
               </Link>
             </motion.div>
           </div>

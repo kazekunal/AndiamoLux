@@ -47,7 +47,13 @@ export default function Navbar() {
         {/* Logo in center */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center hidden md:flex">
           <Link href="#">
-            <h1 className="text-xl md:text-2xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+            <Image
+              src="/logo_3.png"
+              alt="Andiamo Lux Logo"
+              width={160}
+              height={60}
+              className="h-auto"
+            />
           </Link>
         </div>
 
@@ -72,7 +78,13 @@ export default function Navbar() {
           {/* Mobile centered logo */}
           <div className="flex items-center justify-center md:hidden">
             <Link href="#">
-              <h1 className="text-xl font-bold tracking-widest text-white">ANDIAMO LUX</h1>
+              <Image
+                src="/logo_3.png"
+                alt="Andiamo Lux Logo"
+                width={100}
+                height={32}
+                className="h-auto"
+              />
             </Link>
           </div>
                     
