@@ -84,7 +84,7 @@ export default function AboutUsSection() {
             viewport={{ once: true }}
             className="space-y-10"
           > 
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
 
               <h2 className="font-playfair text-2xl text-[#001737] font-bold tracking-tighter sm:text-4xl lg:text-5xl">
                 We design each trip based on your travel style, not off-the-shelf packages.
