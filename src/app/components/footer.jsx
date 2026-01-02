@@ -119,6 +119,12 @@ const Footer = () => {
                     Office No.1A, 2nd Floor, Indure House, Savitri Cinema Complex Greater Kailash 2, New Delhi - 110048
                   </span>
                 </div>
+                <div className="flex items-start gap-2 text-sm mt-3">
+                  <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-400 text-xs leading-relaxed">
+                    3043A, St. No. 1, Power House Road, Bathinda Punjab, 151001
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -229,6 +235,12 @@ const Footer = () => {
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-400 text-xs leading-relaxed">
                   Office No.1A, 2nd Floor, Indure House, Savitri Cinema Complex Greater Kailash 2, New Delhi - 110048
+                </span>
+              </div>
+              <div className="flex items-start gap-2 text-sm mt-3">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-400 text-xs leading-relaxed">
+                  3043A, St. No. 1, Power House Road, Bathinda Punjab, 151001
                 </span>
               </div>
             </div>
